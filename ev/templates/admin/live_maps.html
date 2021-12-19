@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Live Map</title>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+    <script src="{% static 'js/map.js' %} "></script>
+  </head>
+  <body>
+    <h3>imoto Bikes</h3>
+    <!--The div element for the map -->
+    <div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdDuFgpUksKWtzNgddFb9-Ea-ciGStsiU&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
+  </body>
+</html>
