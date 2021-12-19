@@ -18,13 +18,15 @@ from django.urls import path,include
 from django.views.generic.base import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
+from Dashboard.views import map
 
 admin.site.site_header = " "
 # admin.site.site_title = "Admin Console"
 admin.site.index_title = "Admin Console"
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='home'),
-    path('admin/Dashboard/googlemap/', TemplateView.as_view(template_name='admin/live_maps.html'), name='live_map'),
+    # path('admin/Dashboard/googlemap/', TemplateView.as_view(template_name='admin/live_maps.html'), name='live_map'),
+    path('admin/Dashboard/googlemap/', map , name='live_map'),
     path('index/', TemplateView.as_view(template_name='index.html'), name='home'),
     path('admin/', admin.site.urls),
     # path('accounts/', include('Profile.urls')),
