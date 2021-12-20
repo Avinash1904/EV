@@ -43,14 +43,17 @@
 
           for (i = 0; i < locations.length; i++) {
             marker = new google.maps.Marker({
-              position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+              position: new google.maps.LatLng(locations[i][3], locations[i][4]),
               map: map,
               icon: svgMarker
             });
 
             google.maps.event.addListener(marker, 'click', (function(marker, i) {
               return function() {
-                infowindow.setContent(locations[i][0]);
+                infowindow.setContent("<p>" + locations[i][0] + "<br />" +
+                  locations[i][1] + "<br />" + locations[i][2] +
+                  "</p>")
+
                 infowindow.open(map, marker);
               }
             })(marker, i));
