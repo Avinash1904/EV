@@ -1,1 +1,5 @@
-Projects/
+venv
+venv/*
+.vscode/*
+.vscode
+Projects
