@@ -1,0 +1,30 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="#">
+        <img src="{% static 'img/imoto_logo.png' %}" width="150" height="30" class="d-inline-block align-top" alt="">
+
+    </a>
+
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+
+    </div>
+    <div class="mx-auto order-0">
+        <a class="navbar-brand mx-auto" href="#">Welcome {{user.email}}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            </li>
+
+        </ul>
+    </div>
+</nav>

@@ -1,0 +1,15 @@
+{% extends "main.html" %}
+{% load static %}
+{% load bootstrap4 %}
+{% block content %}
+
+<form action="{% url 'device-create' %}" method="POST">
+  {% csrf_token %}
+
+    {% bootstrap_form form  %}
+
+  <button type="submit" class="btn btn-primary">Create</button>
+
+</form>
+
+{% endblock %}

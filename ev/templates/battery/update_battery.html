@@ -1,0 +1,17 @@
+{% extends "main.html" %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+  <h3>Update Battery</h3>
+  <br>
+  <form  action="{% url 'battery-update' battery.pk %}" method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+
+      <button type="submit" class="btn btn-primary">Update</button>
+  </form>
+<br>
+  <a href="{% url 'battery-delete' battery.id %}"><button class="btn btn-danger">Delete</button></a>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+
+  <form  action="{% url 'device-delete' device.id %}" method="post">
+    {% csrf_token %}
+    <p>Are you sure you want to delete {{device.imei_number}} ?</p>
+    <button type="submit" class="btn btn-danger">Confirm Delete</button>
+  </form>
+
+{% endblock %}

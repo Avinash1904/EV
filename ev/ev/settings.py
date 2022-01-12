@@ -26,7 +26,8 @@ SECRET_KEY = 'django-insecure-1z@kjn_kx=*f(cg2z)i^5jgz7q&_hlnr!l4v!^p91oce06as8)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["149.129.147.217", "0.0.0.0", "127.0.0.1", "localhost", "imoto.tech"]
+ALLOWED_HOSTS = ["149.129.147.217", "0.0.0.0",
+                 "127.0.0.1", "localhost", "imoto.tech"]
 
 
 # Application definition
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'Alert',
     'Report',
     'Dashboard',
+    'bootstrap4'
 ]
 
 MIDDLEWARE = [
@@ -139,4 +141,4 @@ AUTH_USER_MODEL = 'Profile.User'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
-GOOGLE_MAPS_API_KEY="AIzaSyDdDuFgpUksKWtzNgddFb9-Ea-ciGStsiU"
+GOOGLE_MAPS_API_KEY = "AIzaSyDdDuFgpUksKWtzNgddFb9-Ea-ciGStsiU"
