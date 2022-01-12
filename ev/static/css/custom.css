@@ -108,3 +108,11 @@ body {
 #myTable tr.header, #myTable tr:hover {
   background-color: #f1f1f1;
 }
+
+/* Map css  */
+#map {
+  height: 80%;
+  /* The height is 400 pixels */
+  width: 100%;
+  /* The width is the width of the web page */
+}

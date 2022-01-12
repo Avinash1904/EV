@@ -1,0 +1,47 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block content %}
+
+
+
+<div class="input-group" style="width:100%; padding:10px;">
+  <form action="{% url 'driver-list'  %}" style="width:33%; flex:none float:left;" method="GET">
+      <input type="text" name="search" class="form-control rounded"  placeholder="Search for driver" value="{{ drivers_filter.form.search.value|default:'' }}">
+</form>
+
+  <div class="" style="width:55%; flex:none float:left;"></div>
+
+
+  <div  class="btn btn-success" style="width:7%; flex:none float:left; ">
+    <a href="{% url 'driver-create' %}" style="color:white">ADD</a>
+  </div>
+</div>
+
+<table class="table">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Name</th>
+      <th scope="col">Phone</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if drivers %}
+    {% for driver in drivers %}
+    <tr>
+      <th scope="row"></th>
+      <td><a href="{% url 'driver-update' driver.id %}">{{driver.name}}</a></td>
+      <td>{{driver.phone_number}}</td>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <tr class="no-data">
+    <td colspan="14">No Record !!</td>
+    </tr>
+    {% endif %}
+  </tbody>
+</table>
+
+
+{% endblock %}

@@ -3,7 +3,7 @@
 {% load bootstrap4 %}
 {% block content %}
 
-<form action="{% url 'vehicle-create' %}" method="POST">
+<form action="{% url 'battery-create' %}" method="POST">
   {% csrf_token %}
 
     {% bootstrap_form form  %}

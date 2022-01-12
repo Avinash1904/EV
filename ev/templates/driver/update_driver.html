@@ -5,13 +5,13 @@
 {% block content %}
   <h3>Update vehicle</h3>
   <br>
-  <form  action="{% url 'vehicle-update' vehicle.pk %}" method="post">
+  <form  action="{% url 'driver-update' driver.pk %}" method="post">
     {% csrf_token %}
     {% bootstrap_form form %}
 
       <button type="submit" class="btn btn-primary">Update</button>
   </form>
 <br>
-  <a href="{% url 'vehicle-delete' vehicle.id %}"><button class="btn btn-danger">Delete</button></a>
+  <a href="{% url 'driver-delete' driver.id %}"><button class="btn btn-danger">Delete</button></a>
 
 {% endblock %}

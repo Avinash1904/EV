@@ -21,6 +21,9 @@ class Device(models.Model):
     def __str__(self):
         return self.imei_number
 
+    def get_absolute_url(self):
+        return reverse('device-list')
+
 
 class Battery(models.Model):
     battery_number = models.CharField(
@@ -42,6 +45,9 @@ class Battery(models.Model):
 
     def __str__(self):
         return self.battery_number
+
+    def get_absolute_url(self):
+        return reverse('battery-list')
 
 
 class Vehicle(models.Model):
@@ -102,3 +108,6 @@ class Driver(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('driver-list')

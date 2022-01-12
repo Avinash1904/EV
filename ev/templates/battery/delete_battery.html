@@ -1,0 +1,12 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+
+  <form  action="{% url 'battery-delete' battery.id %}" method="post">
+    {% csrf_token %}
+    <p>Are you sure you want to delete {{battery.battery_number}} ?</p>
+    <button type="submit" class="btn btn-danger">Confirm Delete</button>
+  </form>
+
+{% endblock %}

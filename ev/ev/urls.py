@@ -25,14 +25,14 @@ admin.site.site_header = " "
 admin.site.index_title = "Admin Console"
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='home'),
+    path('login/', TemplateView.as_view(template_name="profile/login.html")),
     path('main', TemplateView.as_view(template_name='main.html'), name='main'),
     path("vehicles/", include("Vehicle.urls"), name="vehicle"),
     # path('vehicles', TemplateView.as_view(
     #     template_name='vehicles/vehicles_list.html'), name='vehicle_list'),
-    path('admin/Dashboard/googlemap/',
-         TemplateView.as_view(template_name='admin/live_maps.html'), name='live_map'),
+    path('dashboard/', include("Dashboard.urls"), name='dashboard'),
     path('index/', TemplateView.as_view(template_name='index.html'), name='home'),
     path('admin/', admin.site.urls),
-    # path('accounts/', include('Profile.urls')),
+    path('accounts/', include('Profile.urls')),
     # path('accounts/', include('django.contrib.auth.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
