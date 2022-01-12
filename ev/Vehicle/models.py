@@ -1,6 +1,9 @@
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
 # Create your models here.
+
+
 class Device(models.Model):
     imei_number = models.CharField(
         verbose_name="IMEI Number",
@@ -11,7 +14,7 @@ class Device(models.Model):
         max_length=100
     )
     onboarding_date = models.DateTimeField(
-        default=timezone.now, 
+        default=timezone.now,
         verbose_name="onboarding date"
     )
 
@@ -29,7 +32,7 @@ class Battery(models.Model):
         max_length=100
     )
     onboarding_date = models.DateTimeField(
-        default=timezone.now, 
+        default=timezone.now,
         verbose_name="onboarding date"
     )
 
@@ -76,12 +79,15 @@ class Vehicle(models.Model):
         null=True
     )
     created_at = models.DateTimeField(
-        auto_now=True, 
+        auto_now=True,
         verbose_name="created at"
         )
-    
+
     def __str__(self):
         return self.vehicle_id
+
+    def get_absolute_url(self):
+        return reverse('vehicle-list')
 
 
 class Driver(models.Model):

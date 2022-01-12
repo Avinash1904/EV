@@ -1,0 +1,88 @@
+{% load static %}
+
+<div class="row" id="body-row">
+    <!-- Sidebar -->
+    <div id="sidebar-container" class="sidebar-expanded d-none d-md-block col-2">
+        <!-- d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu' -->
+        <!-- Bootstrap List Group -->
+        <ul class="list-group sticky-top sticky-offset">
+          <!-- Separator with title -->
+          <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+              <small>Dashboard</small>
+          </li>
+          <!-- /END Separator -->
+          <!-- Menu with submenu -->
+          <a href="#" class="bg-dark list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-start align-items-center">
+                  <span class="fa fa-tasks fa-fw mr-3"></span>
+                  <span class="menu-collapsed">Live</span>
+              </div>
+          </a>
+
+          <!-- Separator with title -->
+          <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+              <small>Vehicle</small>
+          </li>
+          <!-- /END Separator -->
+          <!-- Menu with submenu -->
+          <a href="{% url 'vehicle-list' %}" class="bg-dark list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-start align-items-center">
+                  <span class="fa fa-tasks fa-fw mr-3"></span>
+                  <span class="menu-collapsed">Vehicles</span>
+              </div>
+          </a>
+
+          <a href="#" class="bg-dark list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-start align-items-center">
+                  <span class="fa fa-tasks fa-fw mr-3"></span>
+                  <span class="menu-collapsed">Batteries</span>
+              </div>
+          </a>
+
+          <a href="#" class="bg-dark list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-start align-items-center">
+                  <span class="fa fa-tasks fa-fw mr-3"></span>
+                  <span class="menu-collapsed">Devices</span>
+              </div>
+          </a>
+
+          <a href="#" class="bg-dark list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-start align-items-center">
+                  <span class="fa fa-tasks fa-fw mr-3"></span>
+                  <span class="menu-collapsed">Drivers</span>
+              </div>
+          </a>
+
+            <!-- Separator with title -->
+            <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+                <small>Alert</small>
+            </li>
+            <!-- /END Separator -->
+            <!-- Menu with submenu -->
+            <a href="#" class="bg-dark list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-tasks fa-fw mr-3"></span>
+                    <span class="menu-collapsed">Alerts</span>
+                </div>
+            </a>
+
+            <!-- Separator with title -->
+            <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+                <small>Report</small>
+            </li>
+            <!-- /END Separator -->
+            <!-- Menu with submenu -->
+            <a href="#" class="bg-dark list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-tasks fa-fw mr-3"></span>
+                    <span class="menu-collapsed">Reports</span>
+                </div>
+            </a>
+
+
+
+
+
+        </ul>
+        <!-- List Group END-->
+    </div>

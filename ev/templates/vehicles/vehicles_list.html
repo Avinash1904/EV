@@ -1,0 +1,45 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block content %}
+
+
+
+<div class="input-group" style="width:100%; padding:10px;">
+  <form action="{% url 'vehicle-list'  %}" style="width:33%; flex:none float:left;" method="GET">
+      <input type="text" name="search" class="form-control rounded"  placeholder="Search for Vehicles" value="{{ vehicles_filter.form.search.value }}">
+</form>
+
+  <div class="" style="width:55%; flex:none float:left;"></div>
+
+
+  <div  class="btn btn-success" style="width:7%; flex:none float:left; ">
+    <a href="{% url 'vehicle-create' %}" style="color:white">ADD</a>
+  </div>
+</div>
+
+<table class="table">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Vehicle Id</th>
+      <th scope="col">Make</th>
+      <th scope="col">Model</th>
+      <th scope="col">Battery</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for vehicle in vehicles %}
+    <tr>
+      <th scope="row"></th>
+      <td><a href="{% url 'vehicle-update' vehicle.id %}">{{vehicle.vehicle_id}}</a></td>
+      <td>{{vehicle.make}}</td>
+      <td>{{vehicle.model}}</td>
+      <td>{{vehicle.battery_id}}</td>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+
+{% endblock %}
