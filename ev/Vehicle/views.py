@@ -8,7 +8,7 @@ from .filters import VehicleFilter, BatteryFilter, DriverFilter, DeviceFilter
 from ev.permissions import AdminOnlyPermissions
 from account.forms import RegistrationForm
 from Profile.forms import ProfileDriverForm
-
+from Profile.models import Profile
 
 class VehicleListView(LoginRequiredMixin, ListView):
     model = Vehicle
@@ -134,7 +134,7 @@ class DeviceDeleteView(LoginRequiredMixin, AdminOnlyPermissions, DeleteView):
 
 
 class DriverListView(LoginRequiredMixin, ListView):
-    model = Driver
+    model = Profile
     template_name = "driver/driver_list.html"
     context_object_name = "drivers"
 
