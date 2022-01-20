@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
+from account.models import Organization
+from Profile.models import Profile
 # Create your models here.
 
 
@@ -88,6 +90,11 @@ class Vehicle(models.Model):
         auto_now=True,
         verbose_name="created at"
         )
+    organization = models.ForeignKey(
+        Organization, related_name="vehicles", null=True, blank=True, on_delete=models.SET_NULL)
+
+    profile = models.ForeignKey(
+        Profile, related_name="vehicles", null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.vehicle_id

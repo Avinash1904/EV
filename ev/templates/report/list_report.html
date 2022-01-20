@@ -1,0 +1,64 @@
+{% extends "main.html" %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+<br>
+<br>
+<h4>Select the date range to download the Report</h4>
+<br>
+<form  action="#" method="post">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        {%bootstrap_field form.start_date layout="horizontal"%}
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        {%bootstrap_field form.end_date layout="horizontal"%}
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        {% bootstrap_button "Download" button_type="submit" button_class="btn-primary" %}
+      </div>
+    </div>
+  </div>
+
+
+
+</form>
+
+<br>
+<h3>Previous Reports</h3>
+<br>
+<table class="table">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Start Date</th>
+      <th scope="col">End Date</th>
+      <th scope="col">Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if reports %}
+    {% for report in reports %}
+    <tr>
+      <th scope="row"></th>
+      <td>{{report.start_date}}</td>
+      <td>{{report.end_date}}</td>
+      <td><a href="{{report.report_csv.url}}" download="{{report.report_csv.url}}" >Download</a></td>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <tr class="no-data">
+    <td colspan="14">No Record !!</td>
+    </tr>
+    {% endif %}
+  </tbody>
+</table>
+
+{% endblock %}

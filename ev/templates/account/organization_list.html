@@ -1,0 +1,37 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block content %}
+
+
+
+{% include 'add_search.html' with search='organization-list' add='organization-create' filter=organizations_filter %}
+
+<table class="table">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Organization Name</th>
+      <th scope="col">UUID</th>
+      <th scope="col">Total Vehicles</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if organizations %}
+    {% for organization in organizations %}
+    <tr>
+      <th scope="row"></th>
+      <td><a href="{% url 'organization-update' organization.pk %}">{{organization.name}}</a></td>
+      <td>{{organization.uuid}}</td>
+      <td>{{organization.vehicles.count}}</td>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <tr class="no-data">
+    <td colspan="14">No Record !!</td>
+    </tr>
+    {% endif %}
+  </tbody>
+</table>
+
+{% endblock %}
