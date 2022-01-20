@@ -1,5 +1,8 @@
 from django.forms import ModelForm
 from .models import Vehicle, Battery, Device, Driver
+from django.contrib.auth.forms import UserCreationForm
+from django import forms
+from account.models import Account
 
 
 class VehicleForm(ModelForm):
@@ -32,3 +35,12 @@ class DriverForm(ModelForm):
     class Meta:
         model = Driver
         fields = '__all__'
+
+
+class RegistrationForm(UserCreationForm):
+    email = forms.EmailField(
+        max_length=100, help_text="Required. Add a valid email address.")
+
+    class Meta:
+        model = Account
+        fields = ("email", "password1", "password2")

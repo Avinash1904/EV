@@ -1,6 +1,6 @@
 import django_filters as filters
 from .models import Vehicle, Battery, Device, Driver
-
+from Profile.models import Profile
 
 class VehicleFilter(filters.FilterSet):
     search = filters.CharFilter(method="filter_search")
@@ -39,7 +39,7 @@ class DriverFilter(filters.FilterSet):
     search = filters.CharFilter(method="filter_search")
 
     class Meta:
-        model = Driver
+        model = Profile
         fields = []
 
     def filter_search(self, queryset, name, value):
