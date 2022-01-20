@@ -24,7 +24,7 @@ admin.site.site_header = " "
 # admin.site.site_title = "Admin Console"
 admin.site.index_title = "Admin Console"
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='index.html'), name='home'),
+    path('', TemplateView.as_view(template_name='main.html'), name='home'),
     path("vehicles/", include("Vehicle.urls"), name="vehicle"),
     path('dashboard/', include("Dashboard.urls"), name='dashboard'),
     path('report/', include("Report.urls"), name='report'),
