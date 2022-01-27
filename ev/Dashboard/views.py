@@ -3,10 +3,11 @@ import requests
 from geopy.geocoders import Nominatim
 from datetime import datetime
 import pytz
-
+from ev.permissions import admin_or_manager_only
 # Create your views here.
 
 
+@admin_or_manager_only
 def map(request):
     # make api call to get token
     geolocator = Nominatim(user_agent="imoto")

@@ -28,6 +28,7 @@ urlpatterns = [
     path("vehicles/", include("Vehicle.urls"), name="vehicle"),
     path('dashboard/', include("Dashboard.urls"), name='dashboard'),
     path('report/', include("Report.urls"), name='report'),
+    path('alert/', include("Alert.urls"), name='alert'),
     path('admin/', admin.site.urls),
     path("accounts/", include("account.urls"), name="account"),
     path("profiles/", include("Profile.urls"), name="profile"),

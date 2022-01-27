@@ -4,7 +4,7 @@
 {% block content %}
 
 
-
+{% include 'add_search.html' with search='profile-list' add='register' filter=profiles_filter placeholder='Search' %}
 
 
 <table class="table">
@@ -13,8 +13,9 @@
       <th scope="col"></th>
       <th scope="col">First Name</th>
       <th scope="col">Last Name</th>
-      <th scope="col">UID</th>
+      <th scope="col">KTP</th>
       <th scope="col">Organization</th>
+      <th scope="col">Role</th>
     </tr>
   </thead>
   <tbody>
@@ -22,10 +23,11 @@
     {% for profile in profiles %}
     <tr>
       <th scope="row"></th>
-      <td>{{profile.first_name}}</a></td>
+      <td><a href="{% url 'profile-update' profile.id %}">{{profile.first_name}}</a></td>
       <td>{{profile.last_name}}</td>
       <td>{{profile.uid}}</td>
       <td>{{profile.organization}}</td>
+      <td>{{profile.profile_type}}</td>
     </tr>
     {% endfor %}
     {% else %}

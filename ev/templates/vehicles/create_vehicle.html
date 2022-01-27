@@ -3,13 +3,90 @@
 {% load bootstrap4 %}
 {% block content %}
 
+
+
+
 <form action="{% url 'vehicle-create' %}" method="POST">
   {% csrf_token %}
+  <div class="form-group row">
+    <label class="col-md-2 col-form-label" for="id_vehicle_id">Vehicle Id</label>
+    <div class="col-md-3">
+      <input type="text" name="vehicle_id" maxlength="50" class="form-control"  placeholder="Vehicle Id" title="" required="" id="id_vehicle_id">
 
-    {% bootstrap_form form  %}
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-md-2 col-form-label" for="id_make">Make</label>
+    <div class="col-md-3">
+      <input type="text" name="make" maxlength="50" class="form-control"  placeholder="Make" title="" required="" id="id_make">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-md-2 col-form-label" for="id_model">Model</label>
+    <div class="col-md-3">
+      <input type="text" name="model" maxlength="50" class="form-control"  placeholder="Model" title="" required="" id="id_model">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-md-2 col-form-label" for="id_battery_id">Battery</label>
+    <div class="col-md-3">
+      {{form.battery_id}}
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-md-2 col-form-label" for="id_device">Device</label>
+    <div class="col-md-3">
+      {{form.device}}
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-md-2 col-form-label" for="id_year">Year</label>
+    <div class="col-md-3">
+      <input type="text" name="year" maxlength="50" class="form-control"  placeholder="Year" title="" required="" id="id_year">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-md-2 col-form-label" for="id_tag">Tag</label>
+    <div class="col-md-3">
+      <input type="text" name="tag" maxlength="50" class="form-control"  placeholder="Tag" title="" required="" id="id_tag">
+    </div>
+  </div>
 
   <button type="submit" class="btn btn-primary">Create</button>
 
 </form>
+
+
+
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+
+{{ form.media }}
+
+<script>
+(function($) {
+    $('#add-form').click(function() {
+        var index = $('#id_inline_test_models-TOTAL_FORMS').val()
+        var newTable = $('#id_inline_test_models-__prefix__-DELETE').parents('table').clone()
+        newTable.find(':input').each(function() {
+            for (attr of ['name', 'id'])
+                $(this).attr(
+                    attr,
+                    $(this).attr(attr).replace('__prefix__', index)
+                )
+        })
+        newTable.insertBefore($(this))
+        $('#id_inline_test_models-TOTAL_FORMS').val(
+            parseInt($('#id_inline_test_models-TOTAL_FORMS').val()) + 1
+        )
+        newTable.slideDown()
+    })
+})($)
+</script>
 
 {% endblock %}

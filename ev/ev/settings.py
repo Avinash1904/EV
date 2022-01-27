@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-1z@kjn_kx=*f(cg2z)i^5jgz7q&_hlnr!l4v!^p91oce06as8)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["149.129.147.217", "0.0.0.0",
                  "127.0.0.1", "localhost", "imoto.tech"]
@@ -33,6 +33,8 @@ ALLOWED_HOSTS = ["149.129.147.217", "0.0.0.0",
 # Application definition
 
 INSTALLED_APPS = [
+    'dal',
+    'dal_select2',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,7 +48,9 @@ INSTALLED_APPS = [
     'Alert',
     'Report',
     'Dashboard',
-    'bootstrap4'
+    'bootstrap4',
+    'crispy_forms',
+
 ]
 
 MIDDLEWARE = [
@@ -148,3 +152,6 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
 GOOGLE_MAPS_API_KEY = "AIzaSyDdDuFgpUksKWtzNgddFb9-Ea-ciGStsiU"
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# handler404 = 'account.views.handle404'

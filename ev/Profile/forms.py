@@ -5,17 +5,12 @@ from .models import Profile
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ("first_name", "last_name", "uid",
+        fields = ("first_name", "last_name", "ktp_number",
                   "organization", "profile_type")
 
 
 class ProfileDriverForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ("first_name", "last_name", "uid")
-
-
-# class ManagerUpdateForm(forms.ModelForm):
-#     class Meta:
-#         model = Profile
-#         fields = ("first_name", "last_name", "uid", "vehicle")
+        fields = ("first_name", "last_name", "ktp_number", "organization",
+                  "sim_image", "ktp_image", "document_verification_status")

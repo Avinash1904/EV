@@ -30,20 +30,16 @@ class AccountAuthenticationForm(forms.ModelForm):
 
 
 class OrganizationCreateForm(forms.ModelForm):
-    available_vehicles = forms.ModelMultipleChoiceField(
-        widget=forms.CheckboxSelectMultiple(),
-        queryset=Vehicle.objects.filter(organization=None))
+    # available_vehicles = forms.ModelMultipleChoiceField(
+    #     widget=forms.CheckboxSelectMultiple(),
+    #     queryset=Vehicle.objects.filter(organization=None))
 
     class Meta:
         model = Organization
-        fields = ("name", "available_vehicles")
+        fields = ("name",)
 
 
 class OrganizationUpdateForm(forms.ModelForm):
-    available_vehicles = forms.ModelMultipleChoiceField(
-        widget=forms.CheckboxSelectMultiple(),
-        queryset=Vehicle.objects.filter(organization=None))
-
     class Meta:
         model = Organization
-        fields = ("available_vehicles",)
+        fields = ("name",)

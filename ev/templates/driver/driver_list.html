@@ -8,7 +8,7 @@
 
 <div class="input-group" style="width:100%; padding:10px;">
   <form action="{% url 'driver-list'  %}" style="width:33%; flex:none float:left;" method="GET">
-      <input type="text" name="search" class="form-control rounded"  placeholder="Search for Vehicles" value="{{ driver_filter.form.search.value|default:'' }}">
+      <input type="text" name="search" class="form-control rounded"  placeholder="Search for Driver" value="{{ driver_filter.form.search.value|default:'' }}">
 </form>
 
   <div class="" style="width:55%; flex:none float:left;"></div>
@@ -29,7 +29,8 @@
       <th scope="col"></th>
       <th scope="col">First Name</th>
       <th scope="col">Last Name</th>
-      <th scope="col">UID</th>
+      <th scope="col">KTP</th>
+      <th scope="col">Vehicles</th>
     </tr>
   </thead>
   <tbody>
@@ -39,7 +40,8 @@
       <th scope="row"></th>
       <td><a href="{% url 'driver-update' driver.id %}">{{driver.first_name}}</a></td>
       <td>{{driver.last_name}}</td>
-      <td>{{driver.uid}}</td>
+      <td>{{driver.ktp_number}}</td>
+      <td>{{driver.vehicles.count}}</td>
     </tr>
     {% endfor %}
     {% else %}

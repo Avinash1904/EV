@@ -1,0 +1,12 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+
+  <form  action="{% url 'profile-delete' profile.id %}" method="post">
+    {% csrf_token %}
+    <p>Are you sure you want to delete {{profile.first_name}} ?</p>
+    <button type="submit" class="btn btn-danger">Confirm Delete</button>
+  </form>
+
+{% endblock %}
