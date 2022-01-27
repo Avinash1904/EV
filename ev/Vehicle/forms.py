@@ -3,6 +3,8 @@ from .models import Vehicle, Battery, Device, Driver
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from account.models import Account
+from Profile.models import Profile
+from dal import autocomplete
 
 
 class VehicleForm(ModelForm):
@@ -10,6 +12,10 @@ class VehicleForm(ModelForm):
         model = Vehicle
         fields = ("vehicle_id", "make", "model",
                   "battery_id", "device", "year", "tag")
+        widgets = {
+            'battery_id': autocomplete.ModelSelect2(url='battery-autocomplete'),
+            'device': autocomplete.ModelSelect2(url='device-autocomplete')
+        }
 
 
 class VehicleUpdateForm(ModelForm):
@@ -17,6 +23,10 @@ class VehicleUpdateForm(ModelForm):
         model = Vehicle
         fields = ("vehicle_id", "make", "model",
                   "battery_id", "device", "year", "tag")
+        widgets = {
+            'battery_id': autocomplete.ModelSelect2(url='battery-autocomplete'),
+            'device': autocomplete.ModelSelect2(url='device-autocomplete')
+        }
 
 
 class BatteryForm(ModelForm):

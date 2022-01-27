@@ -1,0 +1,44 @@
+{% extends "main.html" %}
+{% load static %}
+{% load alerts %}
+{% block content %}
+
+
+<table class="table">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Device ID</th>
+      <th scope="col">Alert Type</th>
+      <th scope="col">Alert Time</th>
+      <th scope="col">Alert Severity</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if data %}
+    {% for dat in data %}
+    <tr>
+      <th scope="row"></th>
+      <td>{{dat.sclId}}</td>
+      <td>{{dat.type}}</td>
+      <td>{{dat.creationTimeStamp.value|get_datetime}}</td>
+      {% if dat.severity == "Critical" %}
+      <td class="table-danger">{{dat.severity}}</td>
+      {% elif dat.severity == "Emergency" %}
+        <td class="bg-danger">{{dat.severity}}</td>
+      {% elif dat.severity == "Warning" %}
+        <td class="table-warning">{{dat.severity}}</td>
+      {% elif dat.severity == "Info" %}
+        <td class="table-info">{{dat.severity}}</td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+    {% else %}
+    <tr class="no-data">
+    <td colspan="14">No Record !!</td>
+    </tr>
+    {% endif %}
+  </tbody>
+</table>
+
+{% endblock %}

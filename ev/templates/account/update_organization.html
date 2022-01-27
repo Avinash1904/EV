@@ -7,11 +7,99 @@
   <br>
   <form  action="{% url 'organization-update' organization.pk %}" method="post">
     {% csrf_token %}
-    {% bootstrap_form form %}
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label" for="id_name">Name</label>
+      <div class="col-md-6">
+        <input type="text" name="name" value="{{organization.name}}" maxlength="200" class="form-control" placeholder="Name" title="" required="" id="id_name">
+      </div>
+    </div>
 
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label" for="id_uuid">Organization ID</label>
+      <div class="col-md-6">
+        <input type="text" name="uuid" value="{{organization.uuid}}" maxlength="100" class="form-control" placeholder="UUID" title="" required="" id="id_uuid" readonly>
+      </div>
+    </div>
+
+
+    <table class="table">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">
+            <input type="checkbox" onclick='selects()' name="select_all"/> Select All<br/>
+          </th>
+          <th scope="col">Vehicle Id</th>
+          <th scope="col">Make</th>
+          <th scope="col">Model</th>
+          <th scope="col">Battery</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if selected_vehicles %}
+        {% for vehicle in selected_vehicles %}
+        <tr>
+          <th scope="row">
+            <input type="checkbox" name="vehicles" value="{{vehicle.id}}" checked><br/>
+          </th>
+          <td><a href="{% url 'vehicle-update' vehicle.id %}">{{vehicle.vehicle_id}}</a></td>
+          <td>{{vehicle.make}}</td>
+          <td>{{vehicle.model}}</td>
+          <td>{{vehicle.battery_id}}</td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+        {% if available_vehicles %}
+        {% for vehicle in available_vehicles %}
+        <tr>
+          <th scope="row">
+            <input type="checkbox" name="vehicles" value="{{vehicle.id}}"><br/>
+          </th>
+          <td><a href="{% url 'vehicle-update' vehicle.id %}">{{vehicle.vehicle_id}}</a></td>
+          <td>{{vehicle.make}}</td>
+          <td>{{vehicle.model}}</td>
+          <td>{{vehicle.battery_id}}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr class="no-data">
+        <td colspan="14">No Record !!</td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+      <br>
       <button type="submit" class="btn btn-primary">Update</button>
   </form>
 <br>
   <a href="#"><button class="btn btn-danger">Delete</button></a>
+
+
+<script type="text/javascript">
+  function selects(){
+      var ele=document.getElementsByName('vehicles');
+      var sel=document.getElementsByName('select_all');
+      for(var i=0; i<ele.length; i++){
+          if(ele[i].type=='checkbox'){
+            if(sel.checked){
+              console.log("select is check'")
+              ele[i].checked=false;
+            }
+            else{
+              console.log("select is not check'")
+              ele[i].checked=true;
+            }
+
+          }
+
+
+      }
+      if(sel.checked){
+        sel.checked=false;
+      }
+      else{
+        sel.checked=true;
+      }
+  }
+</script>
 
 {% endblock %}

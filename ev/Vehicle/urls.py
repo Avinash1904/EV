@@ -29,4 +29,9 @@ urlpatterns = [
     path('driver/create/', driver_registration_view, name='driver-create'),
     path('driver/<pk>/update/', DriverUpdateView.as_view(), name='driver-update'),
     path('driver/<pk>/delete/', DriverDeleteView.as_view(), name='driver-delete'),
+
+    path('battery-autocomplete/', BatteryAutocomplete.as_view(),
+         name="battery-autocomplete"),
+    path('device-autocomplete/', DeviceAutocomplete.as_view(),
+         name="device-autocomplete"),
 ]

@@ -3,15 +3,195 @@
 {% load bootstrap4 %}
 
 {% block content %}
-  <h3>Update vehicle</h3>
+  <h3>Update Driver</h3>
   <br>
   <form  action="{% url 'driver-update' driver.pk %}" method="post">
     {% csrf_token %}
-    {% bootstrap_form form %}
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label" for="id_first_name">First Name</label>
+      <div class="col-md-3">
+        <input type="text" name="first_name" value="{{driver.first_name}}" maxlength="200" class="form-control" placeholder="First Name" title="" required="" id="id_first_name" readonly>
+      </div>
+    </div>
 
-      <button type="submit" class="btn btn-primary">Update</button>
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label" for="id_last_name">Last Name</label>
+      <div class="col-md-3">
+        <input type="text" name="last_name" value="{{driver.last_name}}" maxlength="200" class="form-control" placeholder="Last Name" title="" required="" id="id_last_name" readonly>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label" for="id_ktp_number">KTP Number</label>
+      <div class="col-md-3">
+        <input type="text" name="ktp_number" value="{{driver.ktp_number}}" maxlength="200" class="form-control" placeholder="KTP" title="" required="" id="id_ktp_number" readonly>
+      </div>
+    </div>
+
+
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label" for="id_ktp_image">Sim image</label>
+      <div class="col-md-3">
+        {% if driver.ktp_image %}
+          Currently: <a href="{{driver.ktp_image.url}}">{{driver.ktp_image}}</a>
+        {% endif %}
+        <input type="file" name="ktp_image" accept="image/*" class="form-control-file" title="" id="id_ktp_image">
+      </div>
+    </div>
+
+
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label" for="id_sim_image">Sim image</label>
+      <div class="col-md-3">
+        {% if driver.sim_image %}
+          Currently: <a href="{{driver.sim_image.url}}">{{driver.sim_image}}</a>
+        {% endif %}
+
+        <input type="file" name="sim_image" accept="image/*" class="form-control-file" title="" id="id_sim_image">
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label" for="id_document_verification_status">Verification Status</label>
+      <div class="col-md-3">
+        <input type="text" name="document_verification_status" value="{{driver.document_verification_status}}" maxlength="200" class="form-control" placeholder="KTP" title="" required="" id="id_document_verification_status" readonly>
+      </div>
+      {% if driver.document_verification_status != "accepted" %}
+        <div class="col-md-1">
+          <button type="submit" name="button" value="accept" class="btn btn-success">Approve</button>
+        </div>
+      {% endif %}
+      {% if driver.document_verification_status != "rejected" %}
+        <div class="col-md-1">
+          <button type="submit" name="button" value="reject" class="btn btn-danger">Reject</button>
+        </div>
+      {% endif %}
+      {% if driver.document_verification_status != "pending" %}
+        <div class="col-md-1">
+          <button type="submit" name="button" value="pending" class="btn btn-warning">Pending</button>
+        </div>
+      {% endif %}
+    </div>
+
+    {% if request.user.is_superuser %}
+    {% bootstrap_field form.organization layout="horizontal" field_class="col-md-3"%}
+    {% else %}
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label" for="id_organization">Organization</label>
+      <div class="col-md-3">
+        <input type="hidden" name="organization" value="{{driver.organization.id}}" maxlength="200" class="form-control" placeholder="KTP" title="" required="" id="id_organization" readonly>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label" for="id_org">Organization</label>
+      <div class="col-md-3">
+        <input type="text" name="org" value="{{driver.organization}}" maxlength="200" class="form-control" placeholder="KTP" title="" required="" id="id_organization" readonly>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if driver.document_verification_status == "accepted" %}
+
+      {% if assigned_vehicles or available_vehicles %}
+
+      <table class="table">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">
+              <input type="checkbox" onclick='selects()' name="select_all"/> Select All<br/>
+            </th>
+            <th scope="col">Vehicle Id</th>
+            <th scope="col">Make</th>
+            <th scope="col">Model</th>
+            <th scope="col">Battery</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if assigned_vehicles %}
+          {% for vehicle in assigned_vehicles %}
+          <tr>
+            <th scope="row">
+              <input type="checkbox" name="vehicles" value="{{vehicle.id}}" checked><br/>
+            </th>
+            <td><a href="{% url 'vehicle-update' vehicle.id %}">{{vehicle.vehicle_id}}</a></td>
+            <td>{{vehicle.make}}</td>
+            <td>{{vehicle.model}}</td>
+            <td>{{vehicle.battery_id}}</td>
+          </tr>
+          {% endfor %}
+          {% endif %}
+          {% if available_vehicles %}
+          {% for vehicle in available_vehicles %}
+          <tr>
+            <th scope="row">
+              <input type="checkbox" name="vehicles" value="{{vehicle.id}}"><br/>
+            </th>
+            <td><a href="{% url 'vehicle-update' vehicle.id %}">{{vehicle.vehicle_id}}</a></td>
+            <td>{{vehicle.make}}</td>
+            <td>{{vehicle.model}}</td>
+            <td>{{vehicle.battery_id}}</td>
+          </tr>
+          {% endfor %}
+
+          {% endif %}
+        </tbody>
+      </table>
+      {% else %}
+      <strong>Not enough vehicles to assign </strong>
+      <br>
+      {% endif %}
+    {% else %}
+      <strong>Cannot assign vehicle to an unverified Driver</strong>
+      <br>
+    {% endif %}
+
+      <br>
+
+
+      <div class="form-group row">
+        <div class="col-md-1">
+          <button type="submit" name="button" value="update" class="btn btn-primary">Update</button>
+        </div>
+
+        <div class="col-md-6">
+          <button type="submit" name="button" value="remove" class="btn btn-danger">Remove</button>
+        </div>
+      </div>
   </form>
 <br>
-  <a href="{% url 'driver-delete' driver.id %}"><button class="btn btn-danger">Delete</button></a>
+
+
+
+<script type="text/javascript">
+  function selects(){
+      var ele=document.getElementsByName('vehicles');
+      var sel=document.getElementsByName('select_all');
+      for(var i=0; i<ele.length; i++){
+          if(ele[i].type=='checkbox'){
+            if(sel.checked){
+              console.log("select is check'")
+              ele[i].checked=false;
+            }
+            else{
+              console.log("select is not check'")
+              ele[i].checked=true;
+            }
+
+          }
+
+
+      }
+      if(sel.checked){
+        sel.checked=false;
+      }
+      else{
+        sel.checked=true;
+      }
+  }
+</script>
+
+
+
 
 {% endblock %}

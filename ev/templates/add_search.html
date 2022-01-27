@@ -1,7 +1,7 @@
 {% if request.user.is_admin %}
 <div class="input-group" style="width:100%; padding:10px;">
   <form action="{% url search  %}" style="width:33%; flex:none float:left;" method="GET">
-      <input type="text" name="search" class="form-control rounded"  placeholder="Search for Vehicles" value="{{ filter.form.search.value|default:'' }}">
+      <input type="text" name="search" class="form-control rounded"  placeholder={{placeholder}} value="{{ filter.form.search.value|default:'' }}">
 </form>
 
   <div class="" style="width:55%; flex:none float:left;"></div>

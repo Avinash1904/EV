@@ -5,7 +5,7 @@
 
 
 
-{% include 'add_search.html' with search='vehicle-list' add='vehicle-create' filter=vehicles_filter %}
+{% include 'add_search.html' with search='vehicle-list' add='vehicle-create' filter=vehicles_filter placeholder='Search' %}
 
 <table class="table">
   <thead class="table-dark">
@@ -22,7 +22,11 @@
     {% for vehicle in vehicles %}
     <tr>
       <th scope="row"></th>
+      {% if request.user.is_superuser %}
       <td><a href="{% url 'vehicle-update' vehicle.id %}">{{vehicle.vehicle_id}}</a></td>
+      {% else %}
+      <td>{{vehicle.vehicle_id}}</td>
+      {% endif %}
       <td>{{vehicle.make}}</td>
       <td>{{vehicle.model}}</td>
       <td>{{vehicle.battery_id}}</td>

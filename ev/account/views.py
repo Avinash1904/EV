@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from .forms import RegistrationForm, AccountAuthenticationForm, OrganizationCreateForm, OrganizationUpdateForm
 from ev.permissions import admin_only
@@ -12,6 +12,8 @@ from .filters import OrganizationFilter
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
+from ev.permissions import AdminOnlyPermissions, admin_only
+from django.utils.decorators import method_decorator
 
 
 @admin_only
@@ -69,6 +71,7 @@ def login_view(request):
                 login(request, user)
                 if user.is_password_changed:
                     return redirect("vehicle-list")
+
                 return redirect("password-change")
     else:
         form = AccountAuthenticationForm()
@@ -77,6 +80,7 @@ def login_view(request):
     return render(request, "account/login.html", context)
 
 
+@login_required
 def change_password(request):
     if request.POST:
         form = PasswordChangeForm(request.user, request.POST)
@@ -87,14 +91,14 @@ def change_password(request):
             user = form.save()
             user.is_password_changed = True
             user.save()
-            #update_session_auth_hash(request, user)
             return redirect("login1")
 
     form = PasswordChangeForm(request.user)
     return render(request, "account/password_change.html", {"form": form})
 
 
-class OrganizationCreateView(CreateView):
+@method_decorator(admin_only, name="dispatch")
+class OrganizationCreateView(AdminOnlyPermissions, CreateView):
     form_class = OrganizationCreateForm
     template_name = "account/organization_create.html"
 
@@ -116,7 +120,8 @@ class OrganizationCreateView(CreateView):
         return super().form_valid(form)
 
 
-class OrganizationListView(ListView):
+@method_decorator(admin_only, name="dispatch")
+class OrganizationListView(AdminOnlyPermissions, ListView):
     model = Organization
     template_name = "account/organization_list.html"
     context_object_name = "organizations"
@@ -134,15 +139,30 @@ class OrganizationListView(ListView):
         return context
 
 
-class OrganizationUpdateView(UpdateView):
-    queryset = Vehicle.objects.all()
+@method_decorator(admin_only, name="dispatch")
+class OrganizationUpdateView(AdminOnlyPermissions, UpdateView):
+    queryset = Organization.objects.all()
     template_name = "account/update_organization.html"
     form_class = OrganizationUpdateForm
     context_object_name = "organization"
 
-#
-# class VehicleDeleteView(LoginRequiredMixin, AdminOnlyPermissions, DeleteView):
-#     queryset = Vehicle.objects.all()
-#     template_name = "vehicles/delete_vehicle.html"
-#     context_object_name = "vehicle"
-#     success_url = reverse_lazy("vehicle-list")
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        org = self.get_object()
+        selected_vehicles = org.vehicles.all()
+        available_vehicles = Vehicle.objects.filter(organization=None)
+        context.update({
+            "available_vehicles": available_vehicles,
+            "selected_vehicles": selected_vehicles,
+        })
+        return context
+
+    def form_valid(self, form):
+        org = form.save()
+        vehicles = self.request.POST.getlist("vehicles", None)
+        if vehicles:
+            for vehicle in vehicles:
+                org.vehicles.add(Vehicle.objects.get(id=vehicle))
+        else:
+            org.vehicles.clear()
+        return super().form_valid(form)

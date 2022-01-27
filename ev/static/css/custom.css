@@ -2,6 +2,10 @@ body {
     padding-top: 56px;
 }
 
+.autocomplete{
+  line-height: 16px;
+}
+
 .sticky-offset {
     top: 56px;
 }

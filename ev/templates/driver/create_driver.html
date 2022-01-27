@@ -1,14 +1,50 @@
 {% extends "main.html" %}
 {% load static %}
 {% load bootstrap4 %}
+
 {% block content %}
-
-<form action="{% url 'driver-create' %}" method="POST">
+<h4>Create Driver</h4>
+<br>
+<form  action="{% url 'driver-create' %}" method="post">
   {% csrf_token %}
+  <div class="col-md-6">
+    <div class="form-group">
+      {% bootstrap_form registration_form layout="horizontal"%}
+    </div>
+  </div>
 
-    {% bootstrap_form form  %}
+  <div class="col-md-6">
+    <div class="form-group">
+      {% bootstrap_field profile_form.first_name layout="horizontal"%}
+    </div>
+  </div>
 
-  <button type="submit" class="btn btn-primary">Create</button>
+  <div class="col-md-6">
+    <div class="form-group">
+      {% bootstrap_field profile_form.last_name layout="horizontal"%}
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      {% bootstrap_field profile_form.ktp_number layout="horizontal"%}
+    </div>
+  </div>
+
+{% if request.user.is_superuser %}
+  <div class="col-md-6">
+    <div class="form-group">
+      {% bootstrap_field profile_form.first_name layout="horizontal"%}
+    </div>
+  </div>
+
+  {% endif %}
+
+  <div class="col-md-4">
+    <div class="form-group">
+      {% bootstrap_button "Register" button_type="submit" button_class="btn-primary" %}
+    </div>
+  </div>
 
 </form>
 
