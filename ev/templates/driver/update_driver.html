@@ -5,7 +5,7 @@
 {% block content %}
   <h3>Update Driver</h3>
   <br>
-  <form  action="{% url 'driver-update' driver.pk %}" method="post">
+  <form  action="{% url 'driver-update' driver.pk %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="form-group row">
       <label class="col-md-3 col-form-label" for="id_first_name">First Name</label>
@@ -30,7 +30,7 @@
 
 
     <div class="form-group row">
-      <label class="col-md-3 col-form-label" for="id_ktp_image">Sim image</label>
+      <label class="col-md-3 col-form-label" for="id_ktp_image">KTP image</label>
       <div class="col-md-3">
         {% if driver.ktp_image %}
           Currently: <a href="{{driver.ktp_image.url}}">{{driver.ktp_image}}</a>
@@ -38,6 +38,8 @@
         <input type="file" name="ktp_image" accept="image/*" class="form-control-file" title="" id="id_ktp_image">
       </div>
     </div>
+
+
 
 
     <div class="form-group row">
