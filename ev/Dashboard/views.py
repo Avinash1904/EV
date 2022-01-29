@@ -31,22 +31,30 @@ def map(request):
         device_url = "https://api-aertrakasia.aeris.com/v1.0/api/things/accounts/latestStatus"
         headers = {"token": access_token}
         deviceInfo = requests.get(device_url, headers=headers)
+        count = 0
+        print("vehicles_devices_list ", vehicles_devices_list)
 
         for device in deviceInfo.json():
+            print("device Id ", device["deviceId"])
+            count += 1
             data = []
             if device["validLatitude"]:
-                if device["deviceId"] in vehicles_devices_list:
+                print(" valid lat")
+                if str(device["deviceId"]) in vehicles_devices_list:
+                    vehicle_name = Vehicle.objects.get(
+                        device__imei_number=str(device["deviceId"])).vehicle_id
+                    print("found ..")
                     address = "Unknown"
                     time = device["updateTime"]
                     indonesia_time = datetime.fromtimestamp(time)
-                    vehicle_name = device['vehicleName']
+                    #vehicle_name = device['vehicleName']
                     data.append(vehicle_name)
                     data.append(address)
                     data.append(str(indonesia_time))
                     data.append(device["validLatitude"])
                     data.append(device["validLongitude"])
-
                     locations.append(data)
+        print("count ", count)
 
         # print("locations ", locations)
 

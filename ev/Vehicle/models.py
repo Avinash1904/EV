@@ -59,11 +59,13 @@ class Vehicle(models.Model):
     )
     device = models.ForeignKey(
         Device,
+        related_name="vehicle",
         verbose_name="device",
         on_delete=models.CASCADE
     )
     battery_id = models.ForeignKey(
         Battery,
+        related_name="vehicle",
         on_delete=models.CASCADE,
         verbose_name="battery id",
         max_length=255
