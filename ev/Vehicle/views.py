@@ -19,7 +19,7 @@ from django.utils.decorators import method_decorator
 class BatteryAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         print("autocomplet ")
-        qs = Battery.objects.all()
+        qs = Battery.objects.filter(vehicle=None)
         if self.q:
             qs = qs.filter(battery_number__istartswith=self.q)
 
@@ -30,7 +30,7 @@ class BatteryAutocomplete(autocomplete.Select2QuerySetView):
 class DeviceAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         print("autocomplet ")
-        qs = Device.objects.all()
+        qs = Device.objects.filter(vehicle=None)
         if self.q:
             qs = qs.filter(imei_number__istartswith=self.q)
 
