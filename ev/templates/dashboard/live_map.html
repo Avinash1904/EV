@@ -19,6 +19,13 @@
         //console.log({{locations|safe}})
 
         var locations = {{locations|safe}}
+        var imotoMark=document.getElementById("imotoMark").src;
+        var icon = {
+              url: imotoMark, // url
+              scaledSize: new google.maps.Size(30, 30), // scaled size
+              origin: new google.maps.Point(0,0), // origin
+              anchor: new google.maps.Point(0, 0) // anchor
+          };
 
           var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 8,
@@ -47,8 +54,8 @@
             marker = new google.maps.Marker({
               position: new google.maps.LatLng(locations[i][3], locations[i][4]),
               map: map,
-              icon: svgMarker,
-              label: label,
+              icon: icon,
+              
             });
             markers.push(marker)
 
@@ -82,6 +89,9 @@
     <h3>All Vehicles Live Status !!!</h3>
     <br>
     <div id="map"></div>
+    <div style="display:None;">
+      <img src="{% static 'img/favicon.ico' %}" alt="imoto Marker" id="imotoMark">
+    </div>
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script
