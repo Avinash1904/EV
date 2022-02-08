@@ -31,11 +31,13 @@
 
     <div class="form-group row">
       <label class="col-md-3 col-form-label" for="id_ktp_image">KTP image</label>
-      <div class="col-md-3">
-        {% if driver.ktp_image %}
-          Currently: <a href="{{driver.ktp_image.url}}">{{driver.ktp_image}}</a>
-        {% endif %}
-        <input type="file" name="ktp_image" accept="image/*" class="form-control-file" title="" id="id_ktp_image">
+      {% if driver.ktp_image %}
+      <div class="col-md-1">
+        <img id="ktp_img" src="{{driver.ktp_image.url}}" width="60" height="80" />
+      </div>
+      {% endif %}
+      <div class="col-md-1">
+          <input type="file" name="ktp_image" accept="image/*" class="form-control-file" title="" id="id_ktp_image" onchange="ktpImage(this);">
       </div>
     </div>
 
@@ -44,13 +46,15 @@
 
     <div class="form-group row">
       <label class="col-md-3 col-form-label" for="id_sim_image">Sim image</label>
-      <div class="col-md-3">
-        {% if driver.sim_image %}
-          Currently: <a href="{{driver.sim_image.url}}">{{driver.sim_image}}</a>
-        {% endif %}
-
-        <input type="file" name="sim_image" accept="image/*" class="form-control-file" title="" id="id_sim_image">
+      {% if driver.sim_image %}
+      <div class="col-md-1">
+          <img src="{{ driver.sim_image.url }}" width="60" height="80" id="sim_img"/>
       </div>
+      {% endif %}
+      <div class="col-md-1">
+        <input type="file" name="sim_image" accept="image/*" class="form-control-file" title="" id="id_sim_image" onchange="simImage(this);">
+      </div>
+
     </div>
 
     <div class="form-group row">
@@ -189,6 +193,32 @@
       }
       else{
         sel.checked=true;
+      }
+  }
+
+  function ktpImage(input) {
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+            var ktp = document.getElementById("ktp_img");
+            ktp.src = e.target.result;
+          };
+
+          reader.readAsDataURL(input.files[0]);
+      }
+  }
+
+  function simImage(input) {
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+            var sim = document.getElementById("sim_img");
+            sim.src = e.target.result;
+          };
+
+          reader.readAsDataURL(input.files[0]);
       }
   }
 </script>

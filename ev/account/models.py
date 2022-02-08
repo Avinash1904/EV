@@ -1,7 +1,25 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from uuid import UUID, uuid4
+from uuid import uuid4
 from django.urls import reverse
+
+
+class UUIDManager(models.Manager):
+    def get_by_natural_key(self, uuid):
+        return self.get(uuid=uuid)
+
+
+class UUIDModel(models.Model):
+    uuid = models.UUIDField(
+        default=uuid4, unique=True, editable=False, verbose_name="UUID"
+    )
+    objects = UUIDManager()
+
+    class Meta:
+        abstract = True
+
+    def natural_key(self):
+        return self.uuid
 
 
 class MyAccountManager(BaseUserManager):
@@ -54,11 +72,8 @@ class Account(AbstractBaseUser):
         return True
 
 
-class Organization(models.Model):
+class Organization(UUIDModel):
     name = models.CharField(max_length=100)
-    uuid = models.UUIDField(
-        default=uuid4, unique=True, editable=False, verbose_name="UUID"
-    )
 
     def __str__(self):
         return self.name

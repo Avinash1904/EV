@@ -3,7 +3,7 @@
 {% load bootstrap4 %}
 
 {% block content %}
-  <h3>Update vehicle</h3>
+  <h3>Update Device</h3>
   <br>
   <form  action="{% url 'device-update' device.pk %}" method="post">
     {% csrf_token %}

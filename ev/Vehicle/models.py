@@ -1,12 +1,12 @@
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
-from account.models import Organization
+from account.models import Organization, UUIDModel
 from Profile.models import Profile
 # Create your models here.
 
 
-class Device(models.Model):
+class Device(UUIDModel):
     imei_number = models.CharField(
         verbose_name="IMEI Number",
         max_length=100
@@ -27,7 +27,7 @@ class Device(models.Model):
         return reverse('device-list')
 
 
-class Battery(models.Model):
+class Battery(UUIDModel):
     battery_number = models.CharField(
         verbose_name="battery number",
         max_length=50
@@ -52,7 +52,7 @@ class Battery(models.Model):
         return reverse('battery-list')
 
 
-class Vehicle(models.Model):
+class Vehicle(UUIDModel):
     vehicle_id = models.CharField(
         verbose_name="Vehicle Id",
         max_length=50

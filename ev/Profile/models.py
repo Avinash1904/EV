@@ -1,16 +1,30 @@
 from django.db import models
-from account.models import Account
-from account.models import Organization
+from account.models import Account, Organization, UUIDModel
+from ev.helpers import get_image_upload_path
+from ev.storages import ProfilePicStorageS3, KtpStorageS3, SimStorageS3
 
 
-class Role(models.Model):
+class Role(UUIDModel):
     name = models.CharField(max_length=50, default="user")
 
     def __str__(self):
         return self.name
 
 
-class Profile(models.Model):
+class Documents(UUIDModel):
+    ktp_image = models.ImageField(
+        default="ktp/bg2.png", null=True, blank=True,
+        upload_to=get_image_upload_path, storage=KtpStorageS3
+        )
+    sim_image = models.ImageField(
+        default="ktp/bg2.png", null=True, blank=True,
+        upload_to=get_image_upload_path, storage=SimStorageS3
+        )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class Profile(UUIDModel):
     DRIVER = "driver"
     MANAGER = "manager"
     PROFILE_CHOICES = (
@@ -32,8 +46,10 @@ class Profile(models.Model):
         Account, on_delete=models.CASCADE, related_name="profile")
     first_name = models.CharField(max_length=50, verbose_name="first name")
     last_name = models.CharField(max_length=50, verbose_name="last name")
-    ktp_number = models.CharField(
-        max_length=100, verbose_name="KTP Number")
+    ktp_number = models.CharField(blank=True, null=True,
+                                  max_length=100, verbose_name="KTP Number")
+    sim_number = models.CharField(blank=True, null=True,
+                                  max_length=100, verbose_name="SIM Number")
     profile_type = models.CharField(
         max_length=100, verbose_name="Profile Type",
         choices=PROFILE_CHOICES, default=DRIVER
@@ -52,6 +68,14 @@ class Profile(models.Model):
     )
     organization = models.ForeignKey(
         Organization, on_delete=models.SET_NULL, null=True, blank=True)
+    address = models.TextField(null=True, blank=True, verbose_name="Address")
+    profile_picture = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to=get_image_upload_path,
+        storage=ProfilePicStorageS3()
+    )
+    phone_number = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return (self.first_name + ' ' + self.profile_type)
