@@ -22,7 +22,7 @@
         var imotoMark=document.getElementById("imotoMark").src;
         var icon = {
               url: imotoMark, // url
-              scaledSize: new google.maps.Size(30, 30), // scaled size
+              scaledSize: new google.maps.Size(40, 50), // scaled size
               origin: new google.maps.Point(0,0), // origin
               anchor: new google.maps.Point(0, 0) // anchor
           };
@@ -55,7 +55,7 @@
               position: new google.maps.LatLng(locations[i][3], locations[i][4]),
               map: map,
               icon: icon,
-              
+
             });
             markers.push(marker)
 
@@ -90,7 +90,7 @@
     <br>
     <div id="map"></div>
     <div style="display:None;">
-      <img src="{% static 'img/favicon.ico' %}" alt="imoto Marker" id="imotoMark">
+      <img src="{% static 'img/Map_Icon.png' %}" alt="imoto Marker" id="imotoMark">
     </div>
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
