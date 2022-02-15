@@ -9,7 +9,7 @@ from .filters import VehicleFilter, BatteryFilter, DriverFilter, DeviceFilter
 from ev.permissions import AdminOnlyPermissions, AdminOrManagerOnlyPermissions, admin_only, admin_or_manager_only
 from account.forms import RegistrationForm
 from Profile.forms import ProfileDriverForm
-from Profile.models import Profile
+from Profile.models import Profile, Role
 from dal import autocomplete
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
@@ -180,15 +180,16 @@ class DriverListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        driver_role = Role.objects.get(id=3)
         if self.request.user.is_superuser:
             drivers_filter = DriverFilter(
                 self.request.GET, Profile.objects.filter(
-                    profile_type="driver")
+                    role=driver_role)
             )
         else:
             drivers_filter = DriverFilter(
                 self.request.GET, Profile.objects.filter(
-                    profile_type="driver", organization=self.request.user.profile.organization)
+                    role=driver_role, organization=self.request.user.profile.organization)
             )
         drivers = drivers_filter.qs
         if not self.request.user.is_superuser:

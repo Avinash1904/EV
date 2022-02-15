@@ -24,4 +24,20 @@
   </form>
 <br>
 
+<script type="text/javascript">
+  function ktpImage(input) {
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+            var ktp = document.getElementById("ktp_img");
+            ktp.src = e.target.result;
+          };
+
+          reader.readAsDataURL(input.files[0]);
+      }
+  }
+</script>
+
+
 {% endblock %}

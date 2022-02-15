@@ -40,6 +40,12 @@ class Battery(UUIDModel):
         default=timezone.now,
         verbose_name="onboarding date"
     )
+    min_voltage = models.FloatField(
+        verbose_name="minimum battery volatage", default=42)
+    max_voltage = models.FloatField(
+        verbose_name="maximum battery volatage", default=52.5)
+    max_distance = models.FloatField(
+        verbose_name="Maximum distance on full battery (km)", default=140)
 
     class Meta:
         verbose_name = "Battery"

@@ -11,19 +11,6 @@ class Role(UUIDModel):
         return self.name
 
 
-class Documents(UUIDModel):
-    ktp_image = models.ImageField(
-        default="ktp/bg2.png", null=True, blank=True,
-        upload_to=get_image_upload_path, storage=KtpStorageS3
-        )
-    sim_image = models.ImageField(
-        default="ktp/bg2.png", null=True, blank=True,
-        upload_to=get_image_upload_path, storage=SimStorageS3
-        )
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-
 class Profile(UUIDModel):
     DRIVER = "driver"
     MANAGER = "manager"

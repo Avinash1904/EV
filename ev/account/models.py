@@ -46,9 +46,9 @@ class MyAccountManager(BaseUserManager):
 
 class Account(AbstractBaseUser):
     email = models.EmailField(verbose_name="email",
-                              max_length=100, unique=True)
-    username = models.CharField(
-        verbose_name="username", max_length=30, blank=True, null=True)
+                              max_length=100, unique=True, blank=True, null=True)
+    phone_number = models.CharField(
+        max_length=15, unique=True, blank=True, null=True)
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name="created at")
     date_joined = models.DateTimeField(
@@ -58,12 +58,14 @@ class Account(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_password_changed = models.BooleanField(default=False)
+    firebase_uid = models.CharField(
+        unique=True, null=True, blank=True, max_length=100)
 
     USERNAME_FIELD = 'email'
     objects = MyAccountManager()
 
     def __str__(self):
-        return self.email
+        return self.email or self.phone_number
 
     def has_perm(self, perm, obj=None):
         return self.is_admin

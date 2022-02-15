@@ -5,13 +5,13 @@ from Vehicle.models import Vehicle
 from django.contrib.auth import authenticate
 
 
-class RegistrationForm(UserCreationForm):
+class RegistrationForm(forms.ModelForm):
     email = forms.EmailField(
         max_length=100, help_text="Required. Add a valid email address.")
 
     class Meta:
         model = Account
-        fields = ("email", "password1", "password2")
+        fields = ("email",)
 
 
 class AccountAuthenticationForm(forms.ModelForm):

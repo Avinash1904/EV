@@ -26,6 +26,8 @@ admin.site.index_title = "Admin Console"
 urlpatterns = [
     path('api/v1/', include('ev.apiurls')),
     path('', TemplateView.as_view(template_name='base/index.html'), name='home'),
+    path('firebase/', TemplateView.as_view(template_name='webapp.html'),
+         name='firebase'),
     path("vehicles/", include("Vehicle.urls"), name="vehicle"),
     path('dashboard/', include("Dashboard.urls"), name='dashboard'),
     path('report/', include("Report.urls"), name='report'),

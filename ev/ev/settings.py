@@ -13,12 +13,19 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import environ
+import firebase_admin
+from firebase_admin import credentials
 
 env = environ.Env()
 environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+#firebase admin setup
+cred = credentials.Certificate(
+    os.path.join(BASE_DIR, "ev/imoto-ev-firebase-adminsdk.json"))
+firebase_admin.initialize_app(cred)
 
 
 # Quick-start development settings - unsuitable for production
@@ -89,6 +96,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ev.wsgi.application'
+
+
+# Rest Framework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'ev.auth.FirebaseAuthentication',
+    ]
+}
 
 # CORS
 CORS_ORIGIN_ALLOW_ALL = True
