@@ -28,11 +28,15 @@ class UserViewset(viewsets.ModelViewSet):
         firebase_uid = get_firebase_user_id(token)
         if not firebase_uid:
             return Response({"detail": "Invalid Authentication Token"}, status=status.HTTP_403_FORBIDDEN)
+        full_name = request.data.pop("full_name", None)
+        if not full_name:
+            return Response({"detail": "full_name is required"}, status=status.HTTP_400_BAD_REQUEST)
         data = request.data.copy()
         data["firebase_uid"] = firebase_uid
+        data["first_name"] = full_name.split(" ")[0]
+        data["last_name"] = full_name.split(data["first_name"])[1]
+        print("data is ", data)
         serializer = self.get_serializer(data=data)
         if serializer.is_valid(raise_exception=(True)):
             serializer.save()
-            # custom claim for user
-            auth.set_custom_user_claims(firebase_uid, {'registered': True})
         return Response(serializer.data, status=status.HTTP_201_CREATED)
