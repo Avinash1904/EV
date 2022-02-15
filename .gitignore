@@ -4,3 +4,13 @@ venv/*
 .vscode
 ev/db.*
 Projects
+ev/ev/.env
+ev/*/__pycache__/
+ev/*/migrations/__pycache__/
+ev/*/templatetags/__pycache__/
+ev/*/management/__pycache__/
+ev/*/apis/__pycache__/
+ev/static/
+ev/assets/
+logs/
+ *.pyc
