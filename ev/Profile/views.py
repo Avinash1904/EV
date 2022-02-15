@@ -17,9 +17,9 @@ class ProfileListView(ListView):
     context_object_name = "profiles"
 
     def get_queryset(self):
-        profile_type = self.request.GET.get("profile_type", None)
-        if profile_type == "manager" or profile_type == "driver":
-            return Profile.objects.filter(profile_type=profile_type)
+        # profile_type = self.request.GET.get("profile_type", None)
+        # if profile_type == "manager" or profile_type == "driver":
+        #     return Profile.objects.filter(profile_type=profile_type)
         return Profile.objects.all()
 
     def get_context_data(self, **kwargs):

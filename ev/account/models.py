@@ -1,7 +1,25 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from uuid import UUID, uuid4
+from uuid import uuid4
 from django.urls import reverse
+
+
+class UUIDManager(models.Manager):
+    def get_by_natural_key(self, uuid):
+        return self.get(uuid=uuid)
+
+
+class UUIDModel(models.Model):
+    uuid = models.UUIDField(
+        default=uuid4, unique=True, editable=False, verbose_name="UUID"
+    )
+    objects = UUIDManager()
+
+    class Meta:
+        abstract = True
+
+    def natural_key(self):
+        return self.uuid
 
 
 class MyAccountManager(BaseUserManager):
@@ -28,9 +46,9 @@ class MyAccountManager(BaseUserManager):
 
 class Account(AbstractBaseUser):
     email = models.EmailField(verbose_name="email",
-                              max_length=100, unique=True)
-    username = models.CharField(
-        verbose_name="username", max_length=30, blank=True, null=True)
+                              max_length=100, unique=True, blank=True, null=True)
+    phone_number = models.CharField(
+        max_length=15, unique=True, blank=True, null=True)
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name="created at")
     date_joined = models.DateTimeField(
@@ -40,12 +58,14 @@ class Account(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_password_changed = models.BooleanField(default=False)
+    firebase_uid = models.CharField(
+        unique=True, null=True, blank=True, max_length=100)
 
     USERNAME_FIELD = 'email'
     objects = MyAccountManager()
 
     def __str__(self):
-        return self.email
+        return self.email or self.phone_number
 
     def has_perm(self, perm, obj=None):
         return self.is_admin
@@ -54,11 +74,8 @@ class Account(AbstractBaseUser):
         return True
 
 
-class Organization(models.Model):
+class Organization(UUIDModel):
     name = models.CharField(max_length=100)
-    uuid = models.UUIDField(
-        default=uuid4, unique=True, editable=False, verbose_name="UUID"
-    )
 
     def __str__(self):
         return self.name

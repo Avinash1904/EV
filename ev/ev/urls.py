@@ -24,7 +24,10 @@ admin.site.site_header = " "
 # admin.site.site_title = "Admin Console"
 admin.site.index_title = "Admin Console"
 urlpatterns = [
+    path('api/v1/', include('ev.apiurls')),
     path('', TemplateView.as_view(template_name='base/index.html'), name='home'),
+    path('firebase/', TemplateView.as_view(template_name='webapp.html'),
+         name='firebase'),
     path("vehicles/", include("Vehicle.urls"), name="vehicle"),
     path('dashboard/', include("Dashboard.urls"), name='dashboard'),
     path('report/', include("Report.urls"), name='report'),
@@ -36,5 +39,6 @@ urlpatterns = [
         template_name="account/password_change.html"), name="password_change"),
     path("password-change-done/", auth_views.PasswordChangeDoneView.as_view(
         template_name="account/password_change_complete.html"), name="password_change_complete"),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+# + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -12,9 +12,20 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import environ
+import firebase_admin
+from firebase_admin import credentials
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+#firebase admin setup
+cred = credentials.Certificate(
+    os.path.join(BASE_DIR, "ev/imoto-ev-firebase-adminsdk.json"))
+firebase_admin.initialize_app(cred)
 
 
 # Quick-start development settings - unsuitable for production
@@ -24,7 +35,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-1z@kjn_kx=*f(cg2z)i^5jgz7q&_hlnr!l4v!^p91oce06as8)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["149.129.147.217", "0.0.0.0",
                  "127.0.0.1", "localhost", "imoto.tech"]
@@ -50,12 +61,14 @@ INSTALLED_APPS = [
     'Dashboard',
     'bootstrap4',
     'crispy_forms',
-
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -85,35 +98,55 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ev.wsgi.application'
 
 
+# Rest Framework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'ev.auth.FirebaseAuthentication',
+    ]
+}
+
+# CORS
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env('DATABASE_NAME'),
+        'USER': env('DATABASE_USER'),
+        'PASSWORD': env('DATABASE_PASSWORD'),
+        'HOST': env('HOST'),
+        'PORT': env('PORT'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
-
+        {
+            'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+            },
+        {
+            'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+            },
+        {
+            'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+            },
+        {
+            'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+            },
+        ]
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -128,20 +161,32 @@ USE_L10N = True
 
 USE_TZ = True
 
+# S3 config
+
+AWS_ACCESS_KEY_ID = "AKIAQ5IHT663N6VMERHU"
+AWS_SECRET_ACCESS_KEY = "LOiGup93rn6Tq1VGXEqwJCMSU9Ig/90PywpUY/12"
+AWS_STORAGE_BUCKET_NAME = "imoto-dev-bucket"
+# AWS_S3_SIGNATURE_VERSION = 's3v4'
+# AWS_S3_REGION_NAME = <YOUR AWS S3 BUCKET LOCATION>
+# AWS_S3_FILE_OVERWRITE = False
+# AWS_DEFAULT_ACL = None
+# AWS_S3_VERIFY = True
+AWS_QUERYSTRING_AUTH = False
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
+        os.path.join(BASE_DIR, "assets"),
+        ]
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-MEDIA_URL = "/media/"
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media').replace('\\', '/')
+# MEDIA_URL = "/media/"
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 

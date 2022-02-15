@@ -14,6 +14,21 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from ev.permissions import AdminOnlyPermissions, admin_only
 from django.utils.decorators import method_decorator
+from django.contrib.auth.models import User
+import random
+from ev.auth import create_user_firebase
+
+
+def generate_password():
+    characters = list('abcdefghijklmnopqrstuvwxyz')
+    characters.extend(list('ABCDEFGHIJKLMNOPQRSTUVWXYZ'))
+    characters.extend(list('0123456789'))
+    characters.extend(list('!@#$%^&*()?><:;'))
+    password = ''
+    length = random.randint(10, 13)
+    for x in range(length):
+        password += random.choice(characters)
+    return password
 
 
 @admin_only
@@ -21,22 +36,23 @@ def registration_view(request):
     context = {}
     if request.POST:
         form = RegistrationForm(request.POST)
-
         profile_form = ProfileForm(data=request.POST)
-        print("profile form ", profile_form.data)
         # print(profile_form.data)
         if form.is_valid() and profile_form.is_valid():
-            print("yoooo")
-            user = form.save()
+            password = generate_password()
+            user = form.save(commit=False)
+            user.set_password(password)
+            user.save()
+            print("password ", password)
             profile = profile_form.save(commit=False)
             profile.user = user
-            print(profile.user)
             profile.save()
-            # email = form.cleaned_data.get('email')
-            # password = form.cleaned_data.get("password1")
-            # account = authenticate(email=email, password=password)
-            # login(request, account)
-            return redirect('register')
+            # save user in firebase
+            firebase_user = create_user_firebase(user.email, password)
+            context["email"] = user.email
+            context["password"] = password
+            return render(request, "account/registration_complete.html", context)
+            # return redirect('register')
         else:
             context["registration_form"] = form
             context["profile_form"] = profile_form
