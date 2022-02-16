@@ -35,21 +35,34 @@ class UserViewset(viewsets.ModelViewSet):
         return Response({"status": False, "detail": "You need to register to proceed", "data": {}}, status=status.HTTP_400_BAD_REQUEST)
 
     def create(self, request, *args, **kwargs):
+        op = {}
+        op["status"] = False
+        op["data"] = {}
         token = request.headers.get('Authorization')
         if not token:
-            return Response({"detail": "Authentication is required"}, status=status.HTTP_403_FORBIDDEN)
+            op["detail"] = "Authentication Token is required"
+            return Response(op, status=status.HTTP_403_FORBIDDEN)
         firebase_uid = get_firebase_user_id(token)
         if not firebase_uid:
-            return Response({"detail": "Invalid Authentication Token"}, status=status.HTTP_403_FORBIDDEN)
+            op["detail"] = "Invalid Authentication Token"
+            return Response(op, status=status.HTTP_403_FORBIDDEN)
         full_name = request.data.pop("full_name", None)
         if not full_name:
-            return Response({"detail": "full_name is required"}, status=status.HTTP_400_BAD_REQUEST)
+            op["detail"] = "full_name is required"
+            return Response(op, status=status.HTTP_400_BAD_REQUEST)
         data = request.data.copy()
         data["firebase_uid"] = firebase_uid
         data["first_name"] = full_name.split(" ")[0]
         data["last_name"] = full_name.split(data["first_name"])[1]
         print("data is ", data)
         serializer = self.get_serializer(data=data)
-        if serializer.is_valid(raise_exception=(True)):
+        if serializer.is_valid():
             serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+            op["status"] = True
+            op["detail"] = "Profile created"
+            op["data"] = serializer.data
+        else:
+            op["status"] = True
+            op["detail"] = serializer.errors
+            op["data"] = {}
+        return Response(op, status=status.HTTP_201_CREATED)
