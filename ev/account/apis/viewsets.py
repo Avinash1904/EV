@@ -31,8 +31,8 @@ class UserViewset(viewsets.ModelViewSet):
             User.objects.get(phone_number=phone_number)
             return Response({"status": True}, status=status.HTTP_200_OK)
         except User.DoesNotExist:
-            return Response({"status": False}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({"status": False}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status": False, "detail": "You need to register to proceed", "data": {}}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"status": False, "detail": "You need to register to proceed", "data": {}}, status=status.HTTP_400_BAD_REQUEST)
 
     def create(self, request, *args, **kwargs):
         token = request.headers.get('Authorization')
