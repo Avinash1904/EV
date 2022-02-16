@@ -23,15 +23,12 @@ class UserViewset(viewsets.ModelViewSet):
     serializer_class = CreateUserSerializer
 
     def list(self, request):
-        token = request.headers.get('Authorization')
-        if not token:
-            return Response({"detail": "Authentication is required"}, status=status.HTTP_403_FORBIDDEN)
-        firebase_uid = get_firebase_user_id(token)
-        if not firebase_uid:
-            return Response({"detail": "Invalid Authentication Token"}, status=status.HTTP_403_FORBIDDEN)
+        phone_number = request.GET.get("phone_number", None)
+        if not phone_number:
+            return Response({"detail": "phone_number is required"}, status=status.HTTP_400_BAD_REQUEST)
         User = get_user_model()
         try:
-            user = User.objects.get(firebase_uid=firebase_uid)
+            User.objects.get(phone_number=phone_number)
             return Response({"status": True}, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response({"status": False}, status=status.HTTP_400_BAD_REQUEST)
