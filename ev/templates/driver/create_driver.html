@@ -13,32 +13,72 @@
     </div>
   </div>
 
+
+
   <div class="col-md-6">
     <div class="form-group">
-      {% bootstrap_field profile_form.first_name layout="horizontal"%}
+      {% bootstrap_field profile_form.first_name layout="horizontal" %}
     </div>
   </div>
 
   <div class="col-md-6">
     <div class="form-group">
-      {% bootstrap_field profile_form.last_name layout="horizontal"%}
+      {% bootstrap_field profile_form.last_name layout="horizontal" %}
     </div>
   </div>
 
   <div class="col-md-6">
     <div class="form-group">
-      {% bootstrap_field profile_form.ktp_number layout="horizontal"%}
+      {% bootstrap_field profile_form.ktp_number layout="horizontal" %}
     </div>
   </div>
 
-{% if request.user.is_superuser %}
   <div class="col-md-6">
     <div class="form-group">
-      {% bootstrap_field profile_form.first_name layout="horizontal"%}
+      {% bootstrap_field profile_form.sim_number layout="horizontal" %}
     </div>
   </div>
 
+  {% if request.user.is_admin %}
+  <div class="col-md-6">
+    <div class="form-group">
+      {% bootstrap_field profile_form.organization layout="horizontal" %}
+    </div>
+  </div>
+  {% else %}
+<div class="col-md-6">
+  <div class="form-group">
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label" for="id_organization">Organization</label>
+      <div class="col-md-9">
+        <select name="organization" class="form-control" title="" id="id_organization" readonly>
+        <option value="{{request.user.profile.organization.id}}" selected="">{{request.user.profile.organization}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  </div>
   {% endif %}
+
+  <div class="col-md-6">
+    <div class="form-group">
+      {% bootstrap_field profile_form.ktp_image layout="horizontal" %}
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      {% bootstrap_field profile_form.sim_image layout="horizontal" %}
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      {% bootstrap_field profile_form.document_verification_status layout="horizontal" %}
+    </div>
+  </div>
+
+
 
   <div class="col-md-4">
     <div class="form-group">

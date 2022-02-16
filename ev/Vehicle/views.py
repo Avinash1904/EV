@@ -15,6 +15,22 @@ from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 
 
+import random
+from ev.auth import create_user_firebase
+
+
+def generate_password():
+    characters = list('abcdefghijklmnopqrstuvwxyz')
+    characters.extend(list('ABCDEFGHIJKLMNOPQRSTUVWXYZ'))
+    characters.extend(list('0123456789'))
+    characters.extend(list('!@#$%^&*()?><:;'))
+    password = ''
+    length = random.randint(10, 13)
+    for x in range(length):
+        password += random.choice(characters)
+    return password
+
+
 @method_decorator(admin_only, name="dispatch")
 class BatteryAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
@@ -281,24 +297,33 @@ def driver_registration_view(request):
     context = {}
     if request.POST:
         form = RegistrationForm(request.POST)
-
         profile_form = ProfileDriverForm(data=request.POST)
         # print(profile_form.data)
         if form.is_valid() and profile_form.is_valid():
-            user = form.save()
+            print("valid form")
+            password = generate_password()
+            user = form.save(commit=False)
+            user.set_password(password)
+            user.save()
+            print("password ", password)
             profile = profile_form.save(commit=False)
             profile.user = user
             if not request.user.is_superuser:
                 profile.organization = request.user.profile.organization
             profile.save()
-            return redirect('driver-create')
+            # save user in firebase
+            firebase_user = create_user_firebase(user.email, password)
+            context["email"] = user.email
+            context["password"] = password
+            return render(request, "account/registration_complete.html", context)
         else:
             context["registration_form"] = form
             context["profile_form"] = profile_form
     else:
         print("else")
         form = RegistrationForm()
-        profile_form = ProfileDriverForm()
+        profile_form = ProfileDriverForm(
+            initial={'organization': request.user.profile.organization})
         context["registration_form"] = form
         context["profile_form"] = profile_form
 

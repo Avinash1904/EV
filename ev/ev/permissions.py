@@ -20,7 +20,7 @@ def admin_or_manager_only(view_func):
         if request.user.is_admin:
             return view_func(request, *args, **kwargs)
         # elif request.user.profile.profile_type == "manager":
-        elif request.user.profile.role == Role.objects.get(id=2):
+        elif request.user.profile.role == Role.objects.get(id=3):
             return view_func(request, *args, **kwargs)
         else:
             print("yolo1")
@@ -41,7 +41,7 @@ class AdminOrManagerOnlyPermissions(PermissionRequiredMixin):
         if self.request.user.is_admin:
             return True
         # elif self.request.user.profile.profile_type == "manager":
-        elif self.request.user.profile.role == Role.objects.get(id=2):
+        elif self.request.user.profile.role == Role.objects.get(id=3):
             print("maanager")
             return True
         return False

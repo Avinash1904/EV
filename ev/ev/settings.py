@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #firebase admin setup
 cred = credentials.Certificate(
     os.path.join(BASE_DIR, "ev/imoto-ev-firebase-adminsdk.json"))
-# firebase_admin.initialize_app(cred)
+firebase_admin.initialize_app(cred)
 
 
 # Quick-start development settings - unsuitable for production
@@ -35,7 +35,7 @@ cred = credentials.Certificate(
 SECRET_KEY = 'django-insecure-1z@kjn_kx=*f(cg2z)i^5jgz7q&_hlnr!l4v!^p91oce06as8)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG") or False
 
 ALLOWED_HOSTS = ["149.129.147.217", "0.0.0.0",
                  "127.0.0.1", "localhost", "imoto.tech"]
@@ -178,9 +178,11 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+if env("env") != "local":
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, "assets"),
+        os.path.join(BASE_DIR, "assets") if env(
+            "env") != "local" else os.path.join(BASE_DIR, "static"),
         ]
 
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
