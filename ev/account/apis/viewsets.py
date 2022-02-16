@@ -23,16 +23,27 @@ class UserViewset(viewsets.ModelViewSet):
     serializer_class = CreateUserSerializer
 
     def list(self, request):
+        op = {}
+        op["status"] = False
+        op["data"] = {}
+        op["detail"] = "You need to register to proceed"
         phone_number = request.GET.get("phone_number", None)
         if not phone_number:
-            return Response({"detail": "phone_number is required"}, status=status.HTTP_400_BAD_REQUEST)
+            op["detail"] = "phone_number is required"
+            return Response(op, status=status.HTTP_400_BAD_REQUEST)
         User = get_user_model()
         try:
-            User.objects.get(phone_number=phone_number)
-            return Response({"status": True}, status=status.HTTP_200_OK)
+            user = User.objects.get(
+                phone_number=phone_number.replace(" ", "+"))
+            serializer = self.get_serializer(
+                user, context=self.get_serializer_context())
+            op["data"] = serializer.data
+            op["status"] = True
+            op["detail"] = {}
+            return Response(op, status=status.HTTP_200_OK)
         except User.DoesNotExist:
-            return Response({"status": False, "detail": "You need to register to proceed", "data": {}}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({"status": False, "detail": "You need to register to proceed", "data": {}}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(op, status=status.HTTP_400_BAD_REQUEST)
+        return Response(op, status=status.HTTP_400_BAD_REQUEST)
 
     def create(self, request, *args, **kwargs):
         op = {}
