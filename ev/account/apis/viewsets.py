@@ -68,7 +68,7 @@ class UserViewset(viewsets.ModelViewSet):
             op["detail"] = "Profile created"
             op["data"] = serializer.data
         else:
-            op["status"] = True
+            op["status"] = False
             op["detail"] = serializer.errors
             op["data"] = {}
         return Response(op, status=status.HTTP_201_CREATED)
