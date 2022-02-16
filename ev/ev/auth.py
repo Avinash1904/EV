@@ -15,11 +15,16 @@ class FirebaseAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
         print("checking auth .. ")
 
-        token = request.headers.get('Authorization')
+        token = request.headers.get('Authorization', None)
         if not token:
             return None
 
         try:
+            bearer = token.split("Bearer ")
+            try:
+                token = bearer[1]
+            except Exception as e:
+                return None
             decoded_token = auth.verify_id_token(token)
             uid = decoded_token["user_id"]
             print("uid is ", uid)
