@@ -308,6 +308,7 @@ def driver_registration_view(request):
             print("password ", password)
             profile = profile_form.save(commit=False)
             profile.user = user
+            profile.role = Role.objects.get(id=2)
             if not request.user.is_superuser:
                 profile.organization = request.user.profile.organization
             profile.save()
