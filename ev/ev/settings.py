@@ -178,11 +178,15 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-#if env("env") != "local":
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, "assets"),
-        ]
+if env("env") != "local":
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    STATICFILES_DIRS = [
+            os.path.join(BASE_DIR, "assets"),
+            ]
+else:
+    STATICFILES_DIRS = [
+            os.path.join(BASE_DIR, "static"),
+            ]
 
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #
