@@ -16,7 +16,7 @@ body {
 }
 #sidebar-container {
     min-height: 100vh;
-    background-color: #333;
+    background-color: #fff;
     padding: 0;
 }
 
@@ -35,7 +35,7 @@ body {
 /* Menu item*/
 #sidebar-container .list-group a {
     height: 50px;
-    color: white;
+    color: black;
 }
 
 /* Submenu item*/
@@ -49,7 +49,7 @@ body {
 
 /* Separators */
 .sidebar-separator-title {
-    background-color: #333;
+    background-color: #000;
     height: 35px;
 }
 .sidebar-separator {

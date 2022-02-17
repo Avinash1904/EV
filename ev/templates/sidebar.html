@@ -5,14 +5,14 @@
     <div id="sidebar-container" class="sidebar-expanded d-none d-md-block col-2">
         <!-- d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu' -->
         <!-- Bootstrap List Group -->
-        <ul class="list-group sticky-top sticky-offset">
+        <ul class="list-group sticky-top sticky-offset" >
           <!-- Separator with title -->
-          <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+          <li class="list-group-item sidebar-separator-title text-light d-flex align-items-center menu-collapsed">
               <small>Dashboard</small>
           </li>
           <!-- /END Separator -->
           <!-- Menu with submenu -->
-          <a href="{% url 'live' %}" class="bg-dark list-group-item list-group-item-action">
+          <a href="{% url 'live' %}" class="bg-light list-group-item list-group-item-action">
               <div class="d-flex w-100 justify-content-start align-items-center">
                   <span class="fa fa-tasks fa-fw mr-3"></span>
                   <span class="menu-collapsed">Live</span>
@@ -20,19 +20,19 @@
           </a>
 
           <!-- Separator with title -->
-          <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+          <li class="list-group-item sidebar-separator-title text-light d-flex align-items-center menu-collapsed">
               <small>Vehicle</small>
           </li>
           <!-- /END Separator -->
           <!-- Menu with submenu -->
-          <a href="{% url 'vehicle-list' %}" class="bg-dark list-group-item list-group-item-action">
+          <a href="{% url 'vehicle-list' %}" class="bg-light list-group-item list-group-item-action">
               <div class="d-flex w-100 justify-content-start align-items-center">
                   <span class="fa fa-tasks fa-fw mr-3"></span>
                   <span class="menu-collapsed">Vehicles</span>
               </div>
           </a>
 
-          <a href="{% url 'driver-list' %}" class="bg-dark list-group-item list-group-item-action">
+          <a href="{% url 'driver-list' %}" class="bg-light list-group-item list-group-item-action">
               <div class="d-flex w-100 justify-content-start align-items-center">
                   <span class="fa fa-tasks fa-fw mr-3"></span>
                   <span class="menu-collapsed">Drivers</span>
@@ -41,14 +41,14 @@
 
           {% if request.user.is_superuser %}
 
-          <a href="{% url 'battery-list' %}" class="bg-dark list-group-item list-group-item-action">
+          <a href="{% url 'battery-list' %}" class="bg-light list-group-item list-group-item-action">
               <div class="d-flex w-100 justify-content-start align-items-center">
                   <span class="fa fa-tasks fa-fw mr-3"></span>
                   <span class="menu-collapsed">Batteries</span>
               </div>
           </a>
 
-          <a href="{% url 'device-list' %}" class="bg-dark list-group-item list-group-item-action">
+          <a href="{% url 'device-list' %}" class="bg-light list-group-item list-group-item-action">
               <div class="d-flex w-100 justify-content-start align-items-center">
                   <span class="fa fa-tasks fa-fw mr-3"></span>
                   <span class="menu-collapsed">Devices</span>
@@ -60,12 +60,12 @@
 
 
             <!-- Separator with title -->
-            <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+            <li class="list-group-item sidebar-separator-title text-light d-flex align-items-center menu-collapsed">
                 <small>Alert</small>
             </li>
             <!-- /END Separator -->
             <!-- Menu with submenu -->
-            <a href="{% url 'alerts' %}" class="bg-dark list-group-item list-group-item-action">
+            <a href="{% url 'alerts' %}" class="bg-light list-group-item list-group-item-action">
                 <div class="d-flex w-100 justify-content-start align-items-center">
                     <span class="fa fa-tasks fa-fw mr-3"></span>
                     <span class="menu-collapsed">Alerts</span>
@@ -73,12 +73,12 @@
             </a>
 
             <!-- Separator with title -->
-            <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+            <li class="list-group-item sidebar-separator-title text-light d-flex align-items-center menu-collapsed">
                 <small>Report</small>
             </li>
             <!-- /END Separator -->
             <!-- Menu with submenu -->
-            <a href="{% url 'reports' %}" class="bg-dark list-group-item list-group-item-action">
+            <a href="{% url 'reports' %}" class="bg-light list-group-item list-group-item-action">
                 <div class="d-flex w-100 justify-content-start align-items-center">
                     <span class="fa fa-tasks fa-fw mr-3"></span>
                     <span class="menu-collapsed">Reports</span>
@@ -89,18 +89,18 @@
             {% if user.is_superuser %}
 
             <!-- Separator with title -->
-            <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+            <li class="list-group-item sidebar-separator-title text-light d-flex align-items-center menu-collapsed">
                 <small>Account</small>
             </li>
             <!-- /END Separator -->
             <!-- Menu with submenu -->
-            <a href="{% url 'organization-list' %}" class="bg-dark list-group-item list-group-item-action">
+            <a href="{% url 'organization-list' %}" class="bg-light list-group-item list-group-item-action">
                 <div class="d-flex w-100 justify-content-start align-items-center">
                     <span class="fa fa-tasks fa-fw mr-3"></span>
                     <span class="menu-collapsed">Organization</span>
                 </div>
             </a>
-            <a href="{% url 'profile-list' %}" class="bg-dark list-group-item list-group-item-action">
+            <a href="{% url 'profile-list' %}" class="bg-light list-group-item list-group-item-action">
                 <div class="d-flex w-100 justify-content-start align-items-center">
                     <span class="fa fa-tasks fa-fw mr-3"></span>
                     <span class="menu-collapsed">Users</span>
