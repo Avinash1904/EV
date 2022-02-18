@@ -43,7 +43,7 @@ class Battery(UUIDModel):
     min_voltage = models.FloatField(
         verbose_name="minimum battery volatage", default=42)
     max_voltage = models.FloatField(
-        verbose_name="maximum battery volatage", default=52.5)
+        verbose_name="maximum battery volatage", default=56)
     max_distance = models.FloatField(
         verbose_name="Maximum distance on full battery (km)", default=140)
 
@@ -126,3 +126,17 @@ class Driver(models.Model):
 
     def get_absolute_url(self):
         return reverse('driver-list')
+
+
+class Trip(UUIDModel):
+    # profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, null=True, blank=True)
+    source = models.CharField(max_length=500)
+    destination = models.CharField(max_length=500)
+    start = models.DateTimeField()
+    end = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name="created at"
+        )
