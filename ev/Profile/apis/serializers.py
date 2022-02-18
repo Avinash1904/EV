@@ -13,6 +13,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         view_name="profiles-detail", lookup_field="uuid")
     role = serializers.CharField(
         source='role.name', read_only=True, allow_null=True)
+    phone_number = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
@@ -32,6 +33,9 @@ class ProfileSerializer(serializers.ModelSerializer):
             "organization_name",
             "vehicles",
         )
+
+    def get_phone_number(self, profile):
+        return profile.user.phone_number
 
 
 class CreateProfileSerializer(serializers.ModelSerializer):

@@ -62,7 +62,6 @@ class Profile(UUIDModel):
         upload_to=get_image_upload_path,
         storage=ProfilePicStorageS3()
     )
-    phone_number = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return (self.first_name + ' ' + self.profile_type)
