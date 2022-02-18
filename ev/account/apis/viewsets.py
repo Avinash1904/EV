@@ -78,8 +78,11 @@ class UserViewset(viewsets.ModelViewSet):
             op["status"] = True
             op["detail"] = "Profile created"
             op["data"] = serializer.data
+            return Response(op, status=status.HTTP_201_CREATED)
         else:
             op["status"] = False
             op["detail"] = serializer.errors
+            if 'email' in serializer.errors:
+                op['error_code'] = 'E001'
             op["data"] = {}
-        return Response(op, status=status.HTTP_201_CREATED)
+        return Response(op, status=status.HTTP_400_BAD_REQUEST)
