@@ -205,5 +205,3 @@ GOOGLE_MAPS_API_KEY = "AIzaSyDdDuFgpUksKWtzNgddFb9-Ea-ciGStsiU"
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # handler404 = 'account.views.handle404'
-if env("env")!="local":
-    SECURE_SSL_REDIRECT=True
