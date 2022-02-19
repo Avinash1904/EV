@@ -32,6 +32,10 @@ class TripViewset(viewsets.ModelViewSet):
     authentication_classes = [FirebaseAuthentication, ]
     permission_classes = [IsAuthenticated, ]
 
+    def get_queryset(self):
+        profile = self.request.user.profile
+        return Trip.objects.filter(created_by=profile)
+
     def create(self, request, *args, **kwargs):
         data = request.data.copy()
         created_by = request.user.profile.uuid

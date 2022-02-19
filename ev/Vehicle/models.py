@@ -131,7 +131,7 @@ class Driver(models.Model):
 class Trip(UUIDModel):
     # profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     created_by = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, null=True, blank=True)
+        Profile, related_name="trips", on_delete=models.CASCADE, null=True, blank=True)
     source = models.CharField(max_length=500)
     destination = models.CharField(max_length=500)
     start = models.DateTimeField()
