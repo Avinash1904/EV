@@ -62,7 +62,7 @@ class BatterySerializer(serializers.ModelSerializer):
         data = helpers.get_battery_info(battery.vehicle.first())
         return data["used_percentage"]
 
-    def get_estimated_distance(self, battery):
+    def get_estimated_range(self, battery):
         data = helpers.get_battery_info(battery.vehicle.first())
         return data["estimated_distance"]
 
