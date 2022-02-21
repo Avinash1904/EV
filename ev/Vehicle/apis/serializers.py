@@ -33,7 +33,10 @@ class BatterySerializer(serializers.ModelSerializer):
         view_name="battery-detail", lookup_field="uuid")
     battery_percentage = serializers.SerializerMethodField()
     used_percentage = serializers.SerializerMethodField()
-    estimated_distance = serializers.SerializerMethodField()
+    estimated_range = serializers.SerializerMethodField()
+    battery_cycle = serializers.SerializerMethodField()
+    battery_temprature = serializers.SerializerMethodField()
+    battery_score = serializers.SerializerMethodField()
 
     class Meta:
         model = Battery
@@ -44,7 +47,10 @@ class BatterySerializer(serializers.ModelSerializer):
             "capacity",
             "battery_percentage",
             "used_percentage",
-            "estimated_distance",
+            "estimated_range",
+            "battery_cycle",
+            "battery_temprature",
+            "battery_score",
         )
 
     def get_battery_percentage(self, battery):
@@ -59,6 +65,15 @@ class BatterySerializer(serializers.ModelSerializer):
     def get_estimated_distance(self, battery):
         data = helpers.get_battery_info(battery.vehicle.first())
         return data["estimated_distance"]
+
+    def get_battery_score(self, battery):
+        return None
+
+    def get_battery_temprature(self, battery):
+        return None
+
+    def get_battery_cycle(self, battery):
+        return None
 
 
 class DeviceSerializer(serializers.ModelSerializer):
@@ -92,6 +107,8 @@ class VehicleSerializer(serializers.ModelSerializer):
     battery = BatterySerializer(
         read_only=True, allow_null=True, source="battery_id")
     device = DeviceSerializer(read_only=True, allow_null=True)
+    total_distance_travelled = serializers.SerializerMethodField()
+    total_time_travelled = serializers.SerializerMethodField()
     # device = serializers.ReadOnlyField(source="device.imei_number")
 
     class Meta:
@@ -105,4 +122,12 @@ class VehicleSerializer(serializers.ModelSerializer):
             "year",
             "battery",
             "device",
+            "total_distance_travelled",
+            "total_time_travelled",
         )
+
+    def get_total_time_travelled(self, vehicle):
+        return None
+
+    def get_total_distance_travelled(self, vehicle):
+        return None
