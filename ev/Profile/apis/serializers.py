@@ -85,18 +85,51 @@ class CreateProfileSerializer(serializers.ModelSerializer):
 
 class HomeSerializer(serializers.ModelSerializer):
     home = serializers.SerializerMethodField()
+    profile_url = serializers.SerializerMethodField()
+    vehicles_url = serializers.SerializerMethodField()
+    trips_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
         fields = (
             "home",
+            "profile_url",
+            "vehicles_url",
+            "trips_url",
         )
 
+    def get_trips_url(self, profile):
+        request = self.context["request"]
+        return reverse("trip-list", request=request)
+
+    def get_profile_url(self, profile):
+        request = self.context["request"]
+        return reverse("profiles-detail", kwargs={"uuid": profile.uuid}, request=request)
+
+    def get_vehicles_url(self, profile):
+        url = None
+        request = self.context["request"]
+        vehicle = profile.vehicles.first()
+        if vehicle:
+            vehicle_uuid = vehicle.uuid
+            url = reverse("vehicles-detail",
+                          kwargs={"uuid": vehicle_uuid}, request=request)
+
+        return url
+
     def get_home(self, profile):
-        data = helpers.get_info_by_vehicle(profile.vehicles.first())
-        data['facebook_url'] = settings.FACEBOOK_URL
-        data['twitter_url'] = settings.TWITTER_URL
-        data['instagram_url'] = settings.INSTAGRAM_URL
-        data['profile_picture'] = profile.profile_picture.url
-        data["full_name"] = profile.first_name + " " + profile.last_name
+        vehicle = profile.vehicles.first()
+        if vehicle:
+            data = helpers.get_info_by_vehicle(vehicle)
+            data['facebook_url'] = settings.FACEBOOK_URL
+            data['twitter_url'] = settings.TWITTER_URL
+            data['instagram_url'] = settings.INSTAGRAM_URL
+            data['profile_picture'] = profile.profile_picture.url
+            data["full_name"] = profile.first_name + " " + profile.last_name
+        else:
+            data['facebook_url'] = settings.FACEBOOK_URL
+            data['twitter_url'] = settings.TWITTER_URL
+            data['instagram_url'] = settings.INSTAGRAM_URL
+            data['profile_picture'] = profile.profile_picture.url
+            data["full_name"] = profile.first_name + " " + profile.last_name
         return data

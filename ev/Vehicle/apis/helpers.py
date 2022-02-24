@@ -2,6 +2,15 @@ import requests
 
 
 def get_info_by_vehicle(vehicle):
+    data = {}
+    if not vehicle:
+        data['battery_percentage'] = None
+        data["used_percentage"] = None
+        data["estimated_distance"] = None
+        data["latitude"] = None
+        data["longitude"] = None
+        return data
+
 
     login_url = "https://api-aertrakasia.aeris.com/login"
     login_data = {
@@ -15,7 +24,7 @@ def get_info_by_vehicle(vehicle):
         headers = {"token": access_token}
         deviceInfo = requests.get(device_url, headers=headers)
         count = 0
-        data = {}
+
         for device in deviceInfo.json():
             print("device Id ", device["deviceId"])
             count += 1

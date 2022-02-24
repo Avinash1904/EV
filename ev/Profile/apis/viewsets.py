@@ -32,6 +32,21 @@ class ProfileViewset(viewsets.ModelViewSet):
         return Response(op, status=status.HTTP_200_OK)
 
 
-# class HomeViewSet(viewsets.ModelViewSet):
-#     queryset = Profile.objects.all()
-#     serializer_class = HomeSerializer
+class HomeViewSet(viewsets.ModelViewSet):
+    lookup_field = "uuid"
+    queryset = Profile.objects.all()
+    serializer_class = HomeSerializer
+    authentication_classes = [FirebaseAuthentication, ]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Profile.objects.filter(user=self.request.user)
+
+    def list(self, request, *args, **kwargs):
+        serializer = self.get_serializer(
+            self.request.user.profile, context=self.get_serializer_context()
+        )
+        # serializer = serializer_class(
+        #     self.request.user.profile, request=request)
+        # data = serializer.data['home']
+        return Response(serializer.data)
