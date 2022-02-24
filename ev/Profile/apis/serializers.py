@@ -119,6 +119,7 @@ class HomeSerializer(serializers.ModelSerializer):
 
     def get_home(self, profile):
         vehicle = profile.vehicles.first()
+        data = {}
         if vehicle:
             data = helpers.get_info_by_vehicle(vehicle)
             data['facebook_url'] = settings.FACEBOOK_URL
