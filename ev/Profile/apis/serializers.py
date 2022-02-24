@@ -2,6 +2,8 @@ from rest_framework import serializers
 from Profile.models import Profile, Role
 from Vehicle.apis.serializers import VehicleSerializer, TripSerializer
 from rest_framework.reverse import reverse
+from Vehicle.apis import helpers
+from django.conf import settings
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -9,7 +11,8 @@ class ProfileSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(source='user.email', read_only=True)
     organization_name = serializers.CharField(
         source='organization.name', read_only=True, allow_null=True)
-    vehicles = VehicleSerializer(read_only=True, many=True)
+    # vehicles = VehicleSerializer(read_only=True, many=True)
+    vehicles_url = serializers.SerializerMethodField()
     url = serializers.HyperlinkedIdentityField(
         view_name="profiles-detail", lookup_field="uuid")
     role = serializers.CharField(
@@ -35,9 +38,20 @@ class ProfileSerializer(serializers.ModelSerializer):
             "document_verification_status",
             "role",
             "organization_name",
-            "vehicles",
+            "vehicles_url",
             "trips_url",
         )
+
+    def get_vehicles_url(self, profile):
+        url = None
+        request = self.context["request"]
+        vehicle = profile.vehicles.first()
+        if vehicle:
+            vehicle_uuid = vehicle.uuid
+            url = reverse("vehicles-detail",
+                          kwargs={"uuid": vehicle_uuid}, request=request)
+
+        return url
 
     def get_phone_number(self, profile):
         return profile.user.phone_number
@@ -67,3 +81,22 @@ class CreateProfileSerializer(serializers.ModelSerializer):
         profile.role = Role.objects.get(id=1)
         profile.save()
         return profile
+
+
+class HomeSerializer(serializers.ModelSerializer):
+    home = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Profile
+        fields = (
+            "home",
+        )
+
+    def get_home(self, profile):
+        data = helpers.get_info_by_vehicle(profile.vehicles.first())
+        data['facebook_url'] = settings.FACEBOOK_URL
+        data['twitter_url'] = settings.TWITTER_URL
+        data['instagram_url'] = settings.INSTAGRAM_URL
+        data['profile_picture'] = profile.profile_picture.url
+        data["full_name"] = profile.first_name + " " + profile.last_name
+        return data

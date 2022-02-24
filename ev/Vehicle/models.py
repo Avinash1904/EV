@@ -63,6 +63,12 @@ class Vehicle(UUIDModel):
         verbose_name="Vehicle Id",
         max_length=50
     )
+    vin_number = models.CharField(
+        verbose_name="VIN number",
+        max_length=50,
+        null=True,
+        blank=True
+    )
     device = models.ForeignKey(
         Device,
         related_name="vehicle",

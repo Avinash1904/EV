@@ -2,10 +2,12 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from account.models import Account
 from account.apis.serializers import CreateUserSerializer
+from Profile.apis.serializers import HomeSerializer
 from django.conf import settings
 from ev.auth import FirebaseAuthentication
 from django.contrib.auth import get_user_model
 import firebase_admin.auth as auth
+from Vehicle.apis import helpers
 
 
 def get_firebase_user_id(token):
@@ -28,16 +30,23 @@ class UserViewset(viewsets.ModelViewSet):
         op["data"] = {}
         op["detail"] = "You need to register to proceed"
         phone_number = request.GET.get("phone_number", None)
-        if not phone_number:
-            op["detail"] = "phone_number is required"
+        email = request.GET.get("email", None)
+        if not phone_number and not email:
+            op["detail"] = "phone_number or email is required"
             return Response(op, status=status.HTTP_400_BAD_REQUEST)
         User = get_user_model()
         try:
-            user = User.objects.get(
-                phone_number=phone_number.replace(" ", "+"))
+            if phone_number:
+                user = User.objects.get(
+                    phone_number=phone_number.replace(" ", "+"))
+            else:
+                user = User.objects.get(
+                    email=email)
             serializer = self.get_serializer(
                 user, context=self.get_serializer_context())
+            home_data = HomeSerializer(user.profile)
             op["data"] = serializer.data
+            op["data"]["home"] = home_data.data["home"]
             op["status"] = True
             op["detail"] = {}
             return Response(op, status=status.HTTP_200_OK)
@@ -74,10 +83,12 @@ class UserViewset(viewsets.ModelViewSet):
         print("data is ", data)
         serializer = self.get_serializer(data=data)
         if serializer.is_valid():
-            serializer.save()
+            user = serializer.save()
             op["status"] = True
             op["detail"] = "Profile created"
             op["data"] = serializer.data
+            home_data = HomeSerializer(user.profile)
+            op["data"]["home"] = home_data.data["home"]
             return Response(op, status=status.HTTP_201_CREATED)
         else:
             op["status"] = False

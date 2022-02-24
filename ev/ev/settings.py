@@ -206,4 +206,8 @@ LOGOUT_REDIRECT_URL = 'home'
 GOOGLE_MAPS_API_KEY = "AIzaSyDdDuFgpUksKWtzNgddFb9-Ea-ciGStsiU"
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+FACEBOOK_URL = None
+INSTAGRAM_URL = None
+TWITTER_URL = None
+
 # handler404 = 'account.views.handle404'
