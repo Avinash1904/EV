@@ -44,7 +44,7 @@ class UserViewset(viewsets.ModelViewSet):
                     email=email)
             serializer = self.get_serializer(
                 user, context=self.get_serializer_context())
-            home_data = HomeSerializer(user.profile)
+            home_data = HomeSerializer(user.profile, context=self.get_serializer_context())
             op["data"] = serializer.data
             op["data"]["home"] = home_data.data["home"]
             op["status"] = True
