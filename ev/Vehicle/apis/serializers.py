@@ -37,7 +37,7 @@ class BatterySerializer(serializers.ModelSerializer):
     battery_cycle = serializers.SerializerMethodField()
     battery_temprature = serializers.SerializerMethodField()
     battery_score = serializers.SerializerMethodField()
-    data = None
+    # data = None
 
     class Meta:
         model = Battery
@@ -58,16 +58,16 @@ class BatterySerializer(serializers.ModelSerializer):
     def get_battery_percentage(self, battery):
         print("/n/n vehicle ", battery.vehicle.first())
         data = helpers.get_battery_info(battery.vehicle.first())
-        self.data = data
+        # self.data = data
         return data["battery_percentage"]
 
     def get_used_percentage(self, battery):
-        #data = helpers.get_battery_info(battery.vehicle.first())
-        return self.data["used_percentage"]
+        data = helpers.get_battery_info(battery.vehicle.first())
+        return data["used_percentage"]
 
     def get_estimated_range(self, battery):
-        #data = helpers.get_battery_info(battery.vehicle.first())
-        return self.data["estimated_distance"]
+        data = helpers.get_battery_info(battery.vehicle.first())
+        return data["estimated_distance"]
 
     def get_battery_score(self, battery):
         return None
