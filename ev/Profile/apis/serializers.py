@@ -18,8 +18,8 @@ class ProfileSerializer(serializers.ModelSerializer):
     role = serializers.CharField(
         source='role.name', read_only=True, allow_null=True)
     phone_number = serializers.SerializerMethodField()
+    country_code = serializers.SerializerMethodField()
     trips_url = serializers.SerializerMethodField()
-
 
     class Meta:
         model = Profile
@@ -41,6 +41,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "organization_name",
             "vehicles_url",
             "trips_url",
+            "country_code",
 
         )
 
@@ -57,6 +58,9 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def get_phone_number(self, profile):
         return profile.user.phone_number
+
+    def get_country_code(self, profile):
+        return profile.user.country_code
 
     def get_trips_url(self, profile):
         request = self.context["request"]

@@ -16,6 +16,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
         fields = (
             "email",
             "phone_number",
+            "country_code",
             "firebase_uid",
             "profile_url",
             "first_name",
