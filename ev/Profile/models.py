@@ -2,6 +2,7 @@ from django.db import models
 from account.models import Account, Organization, UUIDModel
 from ev.helpers import get_image_upload_path
 from ev.storages import ProfilePicStorageS3, KtpStorageS3, SimStorageS3
+from django.conf import settings
 
 
 class Role(UUIDModel):
@@ -65,3 +66,10 @@ class Profile(UUIDModel):
 
     def __str__(self):
         return (self.first_name + ' ' + self.profile_type)
+
+    @property
+    def profile_picture_url(self):
+        try:
+            return self.profile_picture.url
+        except:
+            return settings.DEFAULT_PROFILE_PICTURE_URL

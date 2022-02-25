@@ -125,12 +125,12 @@ class HomeSerializer(serializers.ModelSerializer):
             data['facebook_url'] = settings.FACEBOOK_URL
             data['twitter_url'] = settings.TWITTER_URL
             data['instagram_url'] = settings.INSTAGRAM_URL
-            data['profile_picture'] = profile.profile_picture.url
+            data['profile_picture'] = profile.profile_picture_url
             data["full_name"] = profile.first_name + " " + profile.last_name
         else:
             data['facebook_url'] = settings.FACEBOOK_URL
             data['twitter_url'] = settings.TWITTER_URL
             data['instagram_url'] = settings.INSTAGRAM_URL
-            data['profile_picture'] = profile.profile_picture.url
+            data['profile_picture'] = profile.profile_picture_url
             data["full_name"] = profile.first_name + " " + profile.last_name
         return data
