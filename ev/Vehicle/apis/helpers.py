@@ -11,7 +11,6 @@ def get_info_by_vehicle(vehicle):
         data["longitude"] = None
         return data
 
-
     login_url = "https://api-aertrakasia.aeris.com/login"
     login_data = {
         "username": "aeris.krish+Rentalbanaran@gmail.com", "password": "Selis@123"}
@@ -41,8 +40,10 @@ def get_info_by_vehicle(vehicle):
                     new_range = 10
                     # battery_percentage = (
                     #     ((voltage-battery_min_voltage)*new_range)/old_range)
-                    print("voltage is ", (voltage/100))
-                    battery_percentage = ((battery_max_voltage-(voltage/10))
+                    print("voltage is ", (voltage))
+                    print("max is ", battery_max_voltage)
+                    print("min is ", battery_min_voltage)
+                    battery_percentage = ((battery_max_voltage-(voltage))
                                           / (battery_max_voltage-battery_min_voltage))*100
                     used_percentage = 100-battery_percentage
 

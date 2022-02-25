@@ -12,6 +12,20 @@ class VehicleViewset(viewsets.ModelViewSet):
     queryset = Vehicle.objects.all()
     serializer_class = VehicleSerializer
 
+    # @action(detail=True, methods=("post",), url_path="start")
+    # def start(self, request, **kwargs):
+    #     vehicle = self.get_object()
+    #     device = vehicle.device
+    #     command = "REMOTE_IGNITION_OFF"
+    # {
+    # "deviceId": "Device_IMEI",
+    # "request": "REMOTE_IGNITION_OFF",   // Command need to be executed OFF/ON
+    # "message": "testapi15",
+    # "accountId": Account_ID,   // Account ID in which device is provisioned
+    # "requestIdToOperateOn": "testapi15",
+    # "activateAuxiliaryTracker": false
+    # }
+
 
 class BatteryViewset(viewsets.ModelViewSet):
     lookup_field = "uuid"

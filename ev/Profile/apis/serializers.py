@@ -20,6 +20,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     phone_number = serializers.SerializerMethodField()
     trips_url = serializers.SerializerMethodField()
 
+
     class Meta:
         model = Profile
         fields = (
@@ -40,6 +41,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "organization_name",
             "vehicles_url",
             "trips_url",
+
         )
 
     def get_vehicles_url(self, profile):
@@ -88,6 +90,7 @@ class HomeSerializer(serializers.ModelSerializer):
     profile_url = serializers.SerializerMethodField()
     vehicles_url = serializers.SerializerMethodField()
     trips_url = serializers.SerializerMethodField()
+    battery_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
@@ -96,6 +99,7 @@ class HomeSerializer(serializers.ModelSerializer):
             "profile_url",
             "vehicles_url",
             "trips_url",
+            "battery_url",
         )
 
     def get_trips_url(self, profile):
@@ -114,6 +118,19 @@ class HomeSerializer(serializers.ModelSerializer):
             vehicle_uuid = vehicle.uuid
             url = reverse("vehicles-detail",
                           kwargs={"uuid": vehicle_uuid}, request=request)
+
+        return url
+
+    def get_battery_url(self, profile):
+        print("battery url")
+        url = None
+        request = self.context["request"]
+        vehicle = profile.vehicles.first()
+        if vehicle:
+            battery = vehicle.battery_id
+            battery_uuid = battery.uuid
+            url = reverse("battery-detail",
+                          kwargs={"uuid": battery_uuid}, request=request)
 
         return url
 
