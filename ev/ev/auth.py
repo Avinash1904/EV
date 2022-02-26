@@ -16,6 +16,7 @@ class FirebaseAuthentication(authentication.BaseAuthentication):
         print("checking auth .. ")
 
         token = request.headers.get('Authorization', None)
+        print("token is -- ", token)
         if not token:
             return None
 
