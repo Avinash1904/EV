@@ -17,6 +17,7 @@ class FirebaseAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
         print("checking auth .. ")
         User = get_user_model()
+        print("model ", User)
 
         token = request.headers.get('Authorization', None)
         #print("token is -- ", token)
@@ -39,6 +40,7 @@ class FirebaseAuthentication(authentication.BaseAuthentication):
             return None
 
         try:
+            print("jkjkjkjkj")
             user = User.objects.get(firebase_uid=uid)
             print("user is ", user)
             return (user, None)
@@ -59,5 +61,6 @@ class FirebaseAuthentication(authentication.BaseAuthentication):
                 try:
                     user = User.objects.get(email=email)
                 except User.DoesNotExist:
-                    return (user, None)
+                    return None
             return None
+        return None
