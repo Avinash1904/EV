@@ -60,7 +60,8 @@ class Account(AbstractBaseUser):
     is_password_changed = models.BooleanField(default=False)
     firebase_uid = models.CharField(
         unique=True, null=True, blank=True, max_length=100)
-    country_code = models.CharField(max_length=5, default="+91", verbose_name="Country Code")
+    country_code = models.CharField(
+        max_length=5, null=True, blank=True, verbose_name="Country Code")
 
     USERNAME_FIELD = 'email'
     objects = MyAccountManager()

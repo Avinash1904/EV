@@ -1,5 +1,6 @@
 from rest_framework import viewsets, status
 from Profile.apis.serializers import ProfileSerializer, CreateProfileSerializer, HomeSerializer
+from account.models import Account
 from Profile.models import Profile
 from ev.auth import FirebaseAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -31,6 +32,28 @@ class ProfileViewset(viewsets.ModelViewSet):
         serializer = self.get_serializer(instance)
         op["data"] = serializer.data
         return Response(op, status=status.HTTP_200_OK)
+
+    def partial_update(self, request, *args, **kwargs):
+        profile = self.get_object()
+        data = {}
+        data = request.data.copy()
+        phone_number = data.pop('phone_number', None)
+        country_code = data.pop("country_code", None)
+        email = data.pop("email", None)
+        if email or phone_number or country_code:
+            user = profile.user
+            if phone_number:
+                user.phone_number = phone_number
+            if email:
+                user.email = email
+            if country_code:
+                user.country_code = country_code
+            user.save()
+        serializer = self.get_serializer(
+            instance=profile, data=data, partial=True)
+        serializer.is_valid(True)
+        serializer.save()
+        return Response(serializer.data)
 
 
 class HomeViewSet(viewsets.ModelViewSet):

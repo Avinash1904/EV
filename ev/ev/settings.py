@@ -38,7 +38,7 @@ SECRET_KEY = 'django-insecure-1z@kjn_kx=*f(cg2z)i^5jgz7q&_hlnr!l4v!^p91oce06as8)
 DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = ["149.129.147.217", "0.0.0.0",
-                 "127.0.0.1", "localhost", "imoto.tech"]
+                 "127.0.0.1", "localhost", "imoto.tech", "54.162.206.30"]
 
 
 # Application definition
