@@ -88,7 +88,7 @@ class UserViewset(viewsets.ModelViewSet):
             op["status"] = True
             op["detail"] = "Profile created"
             op["data"] = serializer.data
-            home_data = HomeSerializer(user.profile)
+            home_data = HomeSerializer(user.profile, context=self.get_serializer_context())
             op["data"]["home"] = home_data.data["home"]
             return Response(op, status=status.HTTP_201_CREATED)
         else:

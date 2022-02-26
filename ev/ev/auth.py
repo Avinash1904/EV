@@ -27,6 +27,7 @@ class FirebaseAuthentication(authentication.BaseAuthentication):
             except Exception as e:
                 return None
             decoded_token = auth.verify_id_token(token)
+            print("decoded token ", decoded_token)
             uid = decoded_token["user_id"]
             print("uid is ", uid)
         except Exception as e:
