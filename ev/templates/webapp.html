@@ -18,6 +18,7 @@
     <button id="confirm-code" onclick="submitPhoneNumberAuthCode()">
       ENTER CODE
     </button>
+    <button onclick = "googleSignin()">Google Signin</button>
 
     <!-- Add a container for reCaptcha -->
     <div id="recaptcha-container"></div>
@@ -39,6 +40,7 @@
       };
 
       firebase.initializeApp(firebaseConfig);
+      var provider = new firebase.auth.GoogleAuthProvider();
 
       // Create a Recaptcha verifier instance globally
       // Calls submitPhoneNumberAuth() when the captcha is verified
@@ -89,6 +91,25 @@
             console.log(error);
           });
       }
+
+      function googleSignin() {
+       firebase.auth()
+       .signInWithPopup(provider).then(function(result) {
+          var token = result.credential.accessToken;
+          var user = result.user;
+          user.getIdToken().then(function(idToken) {  // <------ Check this line
+         console.log(idToken); // It shows the Firebase token now
+      });
+
+
+       }).catch(function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+
+          console.log(error.code)
+          console.log(error.message)
+       });
+    }
 
       //This function runs everytime the auth state changes. Use to verify if the user is logged in
       firebase.auth().onAuthStateChanged(function(user) {
