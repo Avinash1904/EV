@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from Profile.apis import permissions as custom_perm
 from rest_framework import views
+from django.db import IntegrityError
 
 
 class ProfileViewset(viewsets.ModelViewSet):
@@ -48,7 +49,11 @@ class ProfileViewset(viewsets.ModelViewSet):
                 user.email = email
             if country_code:
                 user.country_code = country_code
-            user.save()
+            try:
+                user.save()
+            except IntegrityError as e:
+                return Response({"detail": e.args[0].split(":")[-1].split(".")[-1] + " already exists"}, status=status.HTTP_409_CONFLICT)
+
         serializer = self.get_serializer(
             instance=profile, data=data, partial=True)
         serializer.is_valid(True)
