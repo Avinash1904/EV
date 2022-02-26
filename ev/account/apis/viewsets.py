@@ -8,6 +8,8 @@ from ev.auth import FirebaseAuthentication
 from django.contrib.auth import get_user_model
 import firebase_admin.auth as auth
 from Vehicle.apis import helpers
+from django.db.models.functions import Concat
+from django.db.models import Value
 
 
 def get_firebase_user_id(token):
@@ -37,8 +39,12 @@ class UserViewset(viewsets.ModelViewSet):
         User = get_user_model()
         try:
             if phone_number:
-                user = User.objects.get(
-                    phone_number=phone_number.replace(" ", "+"))
+                qs = User.objects.annotate(
+                    search_phone_number=Concat(
+                        'country_code', Value(''), 'phone_number')
+                )
+                user = qs.get(
+                    search_phone_number=phone_number.replace(" ", "+"))
             else:
                 user = User.objects.get(
                     email=email)
@@ -88,7 +94,8 @@ class UserViewset(viewsets.ModelViewSet):
             op["status"] = True
             op["detail"] = "Profile created"
             op["data"] = serializer.data
-            home_data = HomeSerializer(user.profile, context=self.get_serializer_context())
+            home_data = HomeSerializer(
+                user.profile, context=self.get_serializer_context())
             op["data"]["home"] = home_data.data["home"]
             return Response(op, status=status.HTTP_201_CREATED)
         else:
