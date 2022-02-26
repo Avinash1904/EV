@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from Vehicle.models import Vehicle, Battery, Device, Trip
+from Vehicle.models import Vehicle, Battery, Device, Trip, LiveStatus
 from Vehicle.apis import helpers
 from Profile.models import Profile
 
@@ -135,3 +135,10 @@ class VehicleSerializer(serializers.ModelSerializer):
 
     def get_total_distance_travelled(self, vehicle):
         return None
+
+
+class LiveStatusSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = LiveStatus
+        fields = '__all__'

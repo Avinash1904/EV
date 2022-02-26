@@ -146,3 +146,16 @@ class Trip(UUIDModel):
         auto_now=True,
         verbose_name="created at"
         )
+
+
+class LiveStatus(models.Model):
+    asset_uid = models.CharField(max_length=64, blank=True, null=True)
+    data_capture_time = models.CharField(
+        max_length=50, verbose_name="data capture time (yyyy-mm-dd-hh)")
+    latitude = models.CharField(max_length=15, verbose_name="device lat")
+    longitude = models.CharField(max_length=15, verbose_name="device long")
+    device_id = models.CharField(max_length=100)
+    speed = models.CharField(max_length=100)
+    account_id = models.CharField(max_length=50)
+    engine_state = models.CharField(max_length=5)
+    battery_voltage = models.CharField(max_length=10)

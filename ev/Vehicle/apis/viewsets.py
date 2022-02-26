@@ -1,7 +1,8 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from Vehicle.apis.serializers import VehicleSerializer, BatterySerializer, DeviceSerializer, TripSerializer
-from Vehicle.models import Vehicle, Battery, Device, Trip
+from Vehicle.apis.serializers import (VehicleSerializer, BatterySerializer,
+                                      DeviceSerializer, TripSerializer, LiveStatusSerializer)
+from Vehicle.models import Vehicle, Battery, Device, Trip, LiveStatus
 from django.utils import timezone
 from ev.auth import FirebaseAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -72,3 +73,41 @@ class TripViewset(viewsets.ModelViewSet):
         serializer.is_valid(True)
         serializer.save()
         return Response(serializer.data)
+
+
+class LiveStatusViewset(viewsets.ModelViewSet):
+    queryset = LiveStatus.objects.all()
+    serializer_class = LiveStatusSerializer
+
+    def create(self, request, *args, **kwargs):
+        data = request.data.copy()
+        location_time = data.pop("locationTime", None)
+        data['asset_uid'] = data.pop("locationTime", None)
+        data['latitude'] = data.pop("latitude", None)
+        data['longitude'] = data.pop("longitude", None)
+        data['device_id'] = data.pop("deviceId", None)
+        data['speed'] = data.pop("speed", None)
+        data['account_id'] = data.pop("accountId", None)
+        data['engine_state'] = data.pop("engineState", None)
+        data['battery_voltage'] = data.pop("assetBatteryVoltage", None)
+        if location_time:
+            temp = location_time.split("T")
+            t1 = temp[0]
+            t2 = temp[1].split(":")[0]
+            captured_time = t1+"-"+t2
+        data["captured_time"] = captured_time
+        # check if status for this time already exists
+        try:
+            ls = LiveStatus.objects.get(
+                captured_time=captured_time, device_id=data['device_id'])
+            serializer = self.get_serializer(
+                instance=ls, data=data, partial=True)
+            serializer.is_valid(True)
+            serializer.save()
+        except LiveStatus.DoesNotExist:
+            # create new entry point
+            serializer = self.get_serializer(data=data)
+            if serializer.is_valid(True):
+                serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
