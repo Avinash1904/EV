@@ -52,7 +52,12 @@ class ProfileViewset(viewsets.ModelViewSet):
             try:
                 user.save()
             except IntegrityError as e:
-                return Response({"detail": e.args[0].split(":")[-1].split(".")[-1] + " already exists"}, status=status.HTTP_409_CONFLICT)
+                err = "phone number already exists"
+                if email and phone_number:
+                    err = "phone number or email already exists"
+                if email:
+                    err = "email already exists"
+                return Response({"detail": err}, status=status.HTTP_409_CONFLICT)
 
         serializer = self.get_serializer(
             instance=profile, data=data, partial=True)
