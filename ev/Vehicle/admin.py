@@ -1,6 +1,8 @@
 from django.contrib import admin
 from .models import *
 # Register your models here.
+
+
 @admin.register(Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
     list_display = (
@@ -9,6 +11,7 @@ class VehicleAdmin(admin.ModelAdmin):
         "model",
         "battery_id",
     )
+
 
 @admin.register(Battery)
 class BatteryAdmin(admin.ModelAdmin):
@@ -24,6 +27,8 @@ class DeviceAdmin(admin.ModelAdmin):
         "imei_number",
         "device_type",
     )
+
+
 # admin.site.register(Battery)
 admin.site.register(Driver)
 admin.site.register(LiveStatus)

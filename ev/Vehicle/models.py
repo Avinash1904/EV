@@ -159,3 +159,10 @@ class LiveStatus(models.Model):
     account_id = models.CharField(max_length=50)
     engine_state = models.CharField(max_length=5)
     battery_voltage = models.CharField(max_length=10)
+    created_at = models.DateField(
+        auto_now=True,
+        verbose_name="created at"
+        )
+
+    def __str__(self):
+        return self.device_id

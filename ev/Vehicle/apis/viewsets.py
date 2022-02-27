@@ -5,7 +5,9 @@ from Vehicle.apis.serializers import (VehicleSerializer, BatterySerializer,
 from Vehicle.models import Vehicle, Battery, Device, Trip, LiveStatus
 from django.utils import timezone
 from ev.auth import FirebaseAuthentication
+from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated
+from account.apis.viewsets import get_firebase_user_id
 import logging
 import datetime
 import base64
@@ -40,6 +42,31 @@ class BatteryViewset(viewsets.ModelViewSet):
     lookup_field = "uuid"
     queryset = Battery.objects.all()
     serializer_class = BatterySerializer
+
+    def retrieve(self, request, *args, **kwargs):
+
+        battery = self.get_object()
+        serializer = self.serializer_class(
+            battery, context=self.get_serializer_context())
+        # grab live status data as well
+        device_id = self.request.user.profile.vehicles.first().device.imei_number
+        qs = LiveStatus.objects.filter(
+            created_at=datetime.datetime.now().date(), device_id=device_id)
+        live_status_serializer = LiveStatusSerializer(qs, many=True)
+        data = live_status_serializer.data
+        graph = []
+        for d in data:
+            voltage = d["battery_voltage"]
+            voltage = int(voltage)/1000
+            battery_min_voltage = battery.min_voltage
+            battery_max_voltage = battery.max_voltage
+            battery_percentage = (
+                (battery_max_voltage-(voltage)) / (battery_max_voltage-battery_min_voltage))*100
+            graph.append(battery_percentage)
+        op = serializer.data.copy()
+        op["graph"] = graph
+        print("graph ", graph)
+        return Response(op)
 
 
 class DeviceViewset(viewsets.ModelViewSet):
