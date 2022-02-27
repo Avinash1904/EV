@@ -87,6 +87,9 @@ class LiveStatusViewset(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         #data = request.data.copy()
+        logger.info("-------live--------")
+        logger.info(request.data)
+        logger.info("-------end-live--------")
         data = {}
         location_time = request.data["data"].pop("locationTime", None)
         print("location_time ", location_time)
