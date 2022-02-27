@@ -6,6 +6,11 @@ import firebase_admin.auth as auth
 from account.models import Account
 from django.db.models.functions import Concat
 from django.db.models import Value
+import logging
+
+# Create a logger for this file
+logger = logging.getLogger(__file__)
+errorLogger = logging.getLogger('error.'+__name__)
 
 
 def create_user_firebase(email, password):
@@ -15,7 +20,8 @@ def create_user_firebase(email, password):
 
 class FirebaseAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
-        print("checking auth .. ")
+        logger.info("checking auth ...")
+        print('checking auth')
         User = get_user_model()
         print("model ", User)
 
@@ -37,6 +43,8 @@ class FirebaseAuthentication(authentication.BaseAuthentication):
             email = decoded_token.get("email", None)
             print("uid is ", uid)
         except Exception as e:
+            print("uid except")
+            errorLogger.exception("uid exception")
             return None
 
         try:

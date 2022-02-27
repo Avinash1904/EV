@@ -26,3 +26,4 @@ class DeviceAdmin(admin.ModelAdmin):
     )
 # admin.site.register(Battery)
 admin.site.register(Driver)
+admin.site.register(LiveStatus)

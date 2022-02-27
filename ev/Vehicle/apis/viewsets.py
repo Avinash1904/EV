@@ -6,6 +6,11 @@ from Vehicle.models import Vehicle, Battery, Device, Trip, LiveStatus
 from django.utils import timezone
 from ev.auth import FirebaseAuthentication
 from rest_framework.permissions import IsAuthenticated
+import logging
+
+# Create a logger for this file
+logger = logging.getLogger(__file__)
+errorLogger = logging.getLogger('error.'+__name__)
 
 
 class VehicleViewset(viewsets.ModelViewSet):

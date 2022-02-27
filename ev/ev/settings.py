@@ -213,3 +213,47 @@ TWITTER_URL = None
 # handler404 = 'account.views.handle404'
 DEFAULT_PROFILE_PICTURE_URL = "https://imoto-dev-bucket.s3.amazonaws.com/profilepicture/%E2%80%94Pngtree%E2%80%94profile+line+black+icon_4008155.png"
 DEFAULT_DOCUMENT_URL = "https://imoto-dev-bucket.s3.amazonaws.com/ktp/illustration-paper.zip"
+
+
+# Logging
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "root": {"level": "INFO", "handlers": ["file"]},
+    "handlers": {
+        "error_file": {
+            "level": "ERROR",
+            "class": "logging.FileHandler",
+            "filename": "log/error.log",
+            "formatter": "app",
+        },
+        "file": {
+            "level": "INFO",
+            "class": "logging.FileHandler",
+            "filename": "log/django.log",
+            "formatter": "app",
+        },
+
+    },
+    "loggers": {
+        'error': {
+            'handlers': ['error_file'],
+            'level': 'ERROR'
+        },
+        "django": {
+            "handlers": ["file"],
+            "level": "INFO",
+            "propagate": True
+        },
+    },
+    "formatters": {
+        "app": {
+            "format": (
+                u"%(asctime)s [%(levelname)-8s] "
+                "(%(module)s.%(funcName)s) %(message)s"
+            ),
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+        },
+    },
+}
