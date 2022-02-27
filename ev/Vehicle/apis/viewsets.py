@@ -8,6 +8,8 @@ from ev.auth import FirebaseAuthentication
 from rest_framework.permissions import IsAuthenticated
 import logging
 import datetime
+import base64
+import json
 
 # Create a logger for this file
 logger = logging.getLogger(__file__)
@@ -87,20 +89,19 @@ class LiveStatusViewset(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         #data = request.data.copy()
-        logger.info("-------live--------")
-        logger.info(request.data)
-        logger.info("-------end-live--------")
+        encoded_data = request.data.get("message").get("data")
+        message_bytes = base64.b64decode(encoded_data)
+        decoded_data = json.loads(message_bytes.decode('utf-8'))
         data = {}
-        location_time = request.data["data"].pop("locationTime", None)
-        print("location_time ", location_time)
-        data['asset_uid'] = request.data["data"].pop("locationTime", None)
-        data['latitude'] = request.data["data"].pop("latitude", None)
-        data['longitude'] = request.data["data"].pop("longitude", None)
-        data['device_id'] = request.data["data"].pop("deviceId", None)
-        data['speed'] = request.data["data"].pop("speed", None)
-        data['account_id'] = request.data["data"].pop("accountId", None)
-        data['engine_state'] = request.data["data"].pop("engineState", None)
-        data['battery_voltage'] = request.data["data"].pop(
+        location_time = decoded_data["data"].pop("locationTime", None)
+        data['asset_uid'] = decoded_data["data"].pop("locationTime", None)
+        data['latitude'] = decoded_data["data"].pop("latitude", None)
+        data['longitude'] = decoded_data["data"].pop("longitude", None)
+        data['device_id'] = decoded_data["data"].pop("deviceId", None)
+        data['speed'] = decoded_data["data"].pop("speed", None)
+        data['account_id'] = decoded_data["data"].pop("accountId", None)
+        data['engine_state'] = decoded_data["data"].pop("engineState", None)
+        data['battery_voltage'] = decoded_data["data"].pop(
             "assetBatteryVoltage", None)
         if location_time:
             epoch_time = location_time/1000
