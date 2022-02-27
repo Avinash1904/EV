@@ -69,6 +69,12 @@ class Vehicle(UUIDModel):
         null=True,
         blank=True
     )
+    vehicle_scl_id = models.CharField(
+        verbose_name="Vehicle SCL ID",
+        max_length=50,
+        null=True,
+        blank=True
+    )
     device = models.ForeignKey(
         Device,
         related_name="vehicle",

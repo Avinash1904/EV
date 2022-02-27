@@ -114,6 +114,7 @@ def get_battery_voltage(vehicle):
         deviceInfo = requests.get(device_url, headers=headers)
         if deviceInfo.status_code == 200:
             device = deviceInfo.json()[0]
+            print("device ", device)
             battery = device["batteryVoltage"][1]
             val = battery["value"] if battery["value"] is not None else 0
             voltage = val/100

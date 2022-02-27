@@ -12,6 +12,8 @@ import logging
 import datetime
 import base64
 import json
+import requests
+from rest_framework.decorators import action
 
 # Create a logger for this file
 logger = logging.getLogger(__file__)
@@ -23,25 +25,79 @@ class VehicleViewset(viewsets.ModelViewSet):
     queryset = Vehicle.objects.all()
     serializer_class = VehicleSerializer
 
-    # @action(detail=True, methods=("post",), url_path="start")
-    # def start(self, request, **kwargs):
-    #     vehicle = self.get_object()
-    #     device = vehicle.device
-    #     command = "REMOTE_IGNITION_OFF"
-    # {
-    # "deviceId": "Device_IMEI",
-    # "request": "REMOTE_IGNITION_OFF",   // Command need to be executed OFF/ON
-    # "message": "testapi15",
-    # "accountId": Account_ID,   // Account ID in which device is provisioned
-    # "requestIdToOperateOn": "testapi15",
-    # "activateAuxiliaryTracker": false
-    # }
+    @action(detail=True, methods=("post",), url_path="start")
+    def start(self, request, **kwargs):
+        vehicle = self.get_object()
+        device = vehicle.device
+        command = "REMOTE_IGNITION_ON"
+        device_imei = device.imei_number
+        account_id = "109800"
+        asset_uid = vehicle.vehicle_scl_id
+        if device_imei and asset_uid:
+            url = "https://api- aertrakasia.aeris.com/v1.0/api/things/assets/"+asset_uid+"/command"
+            login_url = "https://api-aertrakasia.aeris.com/login"
+            login_data = {
+                "username": "aeris.krish+Rentalbanaran@gmail.com", "password": "Selis@123"}
+            response = requests.post(login_url, data=login_data)
+            if response.status_code == 200:
+                print("status is 200")
+                access_token = response.json()["access_token"]
+                headers = {"token": access_token}
+                req_data = {
+                    "deviceId": device_imei,
+                    "request": command,
+                    "message": "testapi15",
+                    "accountId": account_id,
+                    "requestIdToOperateOn": "testapi15",
+                    "activateAuxiliaryTracker": False
+                }
+                resp = requests.post(url=url, headers=headers, data=req_data)
+                if resp.status_code == 200:
+                    return Response({"status": True, "detail": "device started"}, status=status.HTTP_200_OK)
+                return Response({"status": False, "detail": "device not started"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status": False, "detail": "device not started"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"status": False, "detail": "device not started"}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=("post",), url_path="stop")
+    def stop(self, request, **kwargs):
+        vehicle = self.get_object()
+        device = vehicle.device
+        command = "REMOTE_IGNITION_OFF"
+        device_imei = device.imei_number
+        account_id = "109800"
+        asset_uid = vehicle.vehicle_scl_id
+        if device_imei and asset_uid:
+            url = "https://api- aertrakasia.aeris.com/v1.0/api/things/assets/"+asset_uid+"/command"
+            login_url = "https://api-aertrakasia.aeris.com/login"
+            login_data = {
+                "username": "aeris.krish+Rentalbanaran@gmail.com", "password": "Selis@123"}
+            response = requests.post(login_url, data=login_data)
+            if response.status_code == 200:
+                print("status is 200")
+                access_token = response.json()["access_token"]
+                headers = {"token": access_token}
+                req_data = {
+                    "deviceId": device_imei,
+                    "request": command,
+                    "message": "testapi15",
+                    "accountId": account_id,
+                    "requestIdToOperateOn": "testapi15",
+                    "activateAuxiliaryTracker": False
+                }
+                resp = requests.post(url=url, headers=headers, data=req_data)
+                if resp.status_code == 200:
+                    return Response({"status": True, "detail": "device turned off"}, status=status.HTTP_200_OK)
+                return Response({"status": False, "detail": "device not off"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status": False, "detail": "device not off"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"status": False, "detail": "device not off"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class BatteryViewset(viewsets.ModelViewSet):
     lookup_field = "uuid"
     queryset = Battery.objects.all()
     serializer_class = BatterySerializer
+    authentication_classes = [FirebaseAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
 
     def retrieve(self, request, *args, **kwargs):
 
@@ -121,7 +177,7 @@ class LiveStatusViewset(viewsets.ModelViewSet):
         decoded_data = json.loads(message_bytes.decode('utf-8'))
         data = {}
         location_time = decoded_data["data"].pop("locationTime", None)
-        data['asset_uid'] = decoded_data["data"].pop("asset_uid", None)
+        data['asset_uid'] = decoded_data["data"].pop("assetUid", None)
         data['latitude'] = decoded_data["data"].pop("latitude", None)
         data['longitude'] = decoded_data["data"].pop("longitude", None)
         data['device_id'] = decoded_data["data"].pop("deviceId", None)

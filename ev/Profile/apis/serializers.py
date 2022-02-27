@@ -95,6 +95,8 @@ class HomeSerializer(serializers.ModelSerializer):
     vehicles_url = serializers.SerializerMethodField()
     trips_url = serializers.SerializerMethodField()
     battery_url = serializers.SerializerMethodField()
+    vehicle_start_url = serializers.SerializerMethodField()
+    vehicle_stop_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
@@ -104,6 +106,8 @@ class HomeSerializer(serializers.ModelSerializer):
             "vehicles_url",
             "trips_url",
             "battery_url",
+            "vehicle_start_url",
+            "vehicle_stop_url",
         )
 
     def get_trips_url(self, profile):
@@ -121,6 +125,28 @@ class HomeSerializer(serializers.ModelSerializer):
         if vehicle:
             vehicle_uuid = vehicle.uuid
             url = reverse("vehicles-detail",
+                          kwargs={"uuid": vehicle_uuid}, request=request)
+
+        return url
+
+    def get_vehicle_start_url(self, profile):
+        url = None
+        request = self.context["request"]
+        vehicle = profile.vehicles.first()
+        if vehicle:
+            vehicle_uuid = vehicle.uuid
+            url = reverse("vehicles-start",
+                          kwargs={"uuid": vehicle_uuid}, request=request)
+
+        return url
+
+    def get_vehicle_stop_url(self, profile):
+        url = None
+        request = self.context["request"]
+        vehicle = profile.vehicles.first()
+        if vehicle:
+            vehicle_uuid = vehicle.uuid
+            url = reverse("vehicles-stop",
                           kwargs={"uuid": vehicle_uuid}, request=request)
 
         return url
