@@ -7,6 +7,7 @@ from django.utils import timezone
 from ev.auth import FirebaseAuthentication
 from rest_framework.permissions import IsAuthenticated
 import logging
+import datetime
 
 # Create a logger for this file
 logger = logging.getLogger(__file__)
@@ -85,26 +86,33 @@ class LiveStatusViewset(viewsets.ModelViewSet):
     serializer_class = LiveStatusSerializer
 
     def create(self, request, *args, **kwargs):
-        data = request.data.copy()
-        location_time = data.pop("locationTime", None)
-        data['asset_uid'] = data.pop("locationTime", None)
-        data['latitude'] = data.pop("latitude", None)
-        data['longitude'] = data.pop("longitude", None)
-        data['device_id'] = data.pop("deviceId", None)
-        data['speed'] = data.pop("speed", None)
-        data['account_id'] = data.pop("accountId", None)
-        data['engine_state'] = data.pop("engineState", None)
-        data['battery_voltage'] = data.pop("assetBatteryVoltage", None)
+        #data = request.data.copy()
+        data = {}
+        location_time = request.data["data"].pop("locationTime", None)
+        print("location_time ", location_time)
+        data['asset_uid'] = request.data["data"].pop("locationTime", None)
+        data['latitude'] = request.data["data"].pop("latitude", None)
+        data['longitude'] = request.data["data"].pop("longitude", None)
+        data['device_id'] = request.data["data"].pop("deviceId", None)
+        data['speed'] = request.data["data"].pop("speed", None)
+        data['account_id'] = request.data["data"].pop("accountId", None)
+        data['engine_state'] = request.data["data"].pop("engineState", None)
+        data['battery_voltage'] = request.data["data"].pop(
+            "assetBatteryVoltage", None)
         if location_time:
-            temp = location_time.split("T")
-            t1 = temp[0]
-            t2 = temp[1].split(":")[0]
-            captured_time = t1+"-"+t2
-        data["captured_time"] = captured_time
+            epoch_time = location_time/1000
+            date_time = datetime.datetime.fromtimestamp(epoch_time)
+            # temp = location_time.split("T")
+            captured_time = date_time.strftime("%Y-%m-%d-%H")
+            # t1 = temp[0]
+            # t2 = temp[1].split(":")[0]
+            # captured_time = t1+"-"+t2
+        data["data_capture_time"] = captured_time
+        print("data ", data)
         # check if status for this time already exists
         try:
             ls = LiveStatus.objects.get(
-                captured_time=captured_time, device_id=data['device_id'])
+                data_capture_time=captured_time, device_id=data['device_id'])
             serializer = self.get_serializer(
                 instance=ls, data=data, partial=True)
             serializer.is_valid(True)
