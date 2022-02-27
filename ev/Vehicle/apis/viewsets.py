@@ -94,7 +94,7 @@ class LiveStatusViewset(viewsets.ModelViewSet):
         decoded_data = json.loads(message_bytes.decode('utf-8'))
         data = {}
         location_time = decoded_data["data"].pop("locationTime", None)
-        data['asset_uid'] = decoded_data["data"].pop("locationTime", None)
+        data['asset_uid'] = decoded_data["data"].pop("asset_uid", None)
         data['latitude'] = decoded_data["data"].pop("latitude", None)
         data['longitude'] = decoded_data["data"].pop("longitude", None)
         data['device_id'] = decoded_data["data"].pop("deviceId", None)
