@@ -209,6 +209,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 FACEBOOK_URL = None
 INSTAGRAM_URL = None
 TWITTER_URL = None
+TIKTOK_URL = None
 
 # handler404 = 'account.views.handle404'
 DEFAULT_PROFILE_PICTURE_URL = "https://imoto-dev-bucket.s3.amazonaws.com/profilepicture/%E2%80%94Pngtree%E2%80%94profile+line+black+icon_4008155.png"
