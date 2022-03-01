@@ -42,6 +42,10 @@ def get_info_by_vehicle(vehicle):
                                   / (battery_max_voltage-battery_min_voltage))*100
             used_percentage = 100-battery_percentage
 
+            if battery_percentage > 100:
+                battery_percentage = 100
+                used_percentage = 0
+
             # calculate estimated distance
             distance = (battery_percentage
                         * vehicle.battery_id.max_distance)/100
@@ -149,6 +153,9 @@ def get_battery_info(vehicle):
         battery_percentage = ((battery_max_voltage-(voltage/10))
                               / (battery_max_voltage-battery_min_voltage))*100
         used_percentage = 100-battery_percentage
+        if battery_percentage > 100:
+            battery_percentage = 100
+            used_percentage = 0
 
         # calculate estimated distance
         distance = (battery_percentage*vehicle.battery_id.max_distance)/100

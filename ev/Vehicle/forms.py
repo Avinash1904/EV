@@ -11,7 +11,7 @@ class VehicleForm(ModelForm):
     class Meta:
         model = Vehicle
         fields = ("vehicle_id", "make", "model",
-                  "battery_id", "device", "year", "tag", "vehicle_scl_id", "vin_number",)
+                  "battery_id", "device", "year", "tag", "vin_number",)
         widgets = {
             'battery_id': autocomplete.ModelSelect2(url='battery-autocomplete'),
             'device': autocomplete.ModelSelect2(url='device-autocomplete')
@@ -22,7 +22,7 @@ class VehicleUpdateForm(ModelForm):
     class Meta:
         model = Vehicle
         fields = ("vehicle_id", "make", "model",
-                  "battery_id", "device", "year", "tag", "vehicle_scl_id", "vin_number",)
+                  "battery_id", "device", "year", "tag", "vin_number",)
         widgets = {
             'battery_id': autocomplete.ModelSelect2(url='battery-autocomplete'),
             'device': autocomplete.ModelSelect2(url='device-autocomplete')

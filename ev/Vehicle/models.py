@@ -19,6 +19,12 @@ class Device(UUIDModel):
         default=timezone.now,
         verbose_name="onboarding date"
     )
+    vehicle_scl_id = models.CharField(
+        verbose_name="Vehicle SCL ID",
+        max_length=50,
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         return self.imei_number
@@ -41,9 +47,9 @@ class Battery(UUIDModel):
         verbose_name="onboarding date"
     )
     min_voltage = models.FloatField(
-        verbose_name="minimum battery volatage", default=42)
+        verbose_name="minimum battery volatage", default=37)
     max_voltage = models.FloatField(
-        verbose_name="maximum battery volatage", default=56)
+        verbose_name="maximum battery volatage", default=53)
     max_distance = models.FloatField(
         verbose_name="Maximum distance on full battery (km)", default=140)
 
@@ -69,12 +75,7 @@ class Vehicle(UUIDModel):
         null=True,
         blank=True
     )
-    vehicle_scl_id = models.CharField(
-        verbose_name="Vehicle SCL ID",
-        max_length=50,
-        null=True,
-        blank=True
-    )
+
     device = models.ForeignKey(
         Device,
         related_name="vehicle",

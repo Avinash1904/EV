@@ -73,7 +73,7 @@ class UserViewset(viewsets.ModelViewSet):
         try:
             token = bearer[1]
         except Exception as e:
-            op["detail"] = "Authentication Token is required"
+            op["detail"] = "Invalid Auth Token"
             return Response(op, status=status.HTTP_403_FORBIDDEN)
         firebase_uid = get_firebase_user_id(token)
         if not firebase_uid:

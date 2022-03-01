@@ -32,7 +32,7 @@ class VehicleViewset(viewsets.ModelViewSet):
         command = "REMOTE_IGNITION_ON"
         device_imei = device.imei_number
         account_id = "109800"
-        asset_uid = vehicle.vehicle_scl_id
+        asset_uid = vehicle.device.vehicle_scl_id
         if device_imei and asset_uid:
             url = "https://api- aertrakasia.aeris.com/v1.0/api/things/assets/"+asset_uid+"/command"
             login_url = "https://api-aertrakasia.aeris.com/login"
@@ -65,7 +65,7 @@ class VehicleViewset(viewsets.ModelViewSet):
         command = "REMOTE_IGNITION_OFF"
         device_imei = device.imei_number
         account_id = "109800"
-        asset_uid = vehicle.vehicle_scl_id
+        asset_uid = vehicle.device.vehicle_scl_id
         if device_imei and asset_uid:
             url = "https://api- aertrakasia.aeris.com/v1.0/api/things/assets/"+asset_uid+"/command"
             login_url = "https://api-aertrakasia.aeris.com/login"

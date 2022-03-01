@@ -31,4 +31,13 @@ class DeviceAdmin(admin.ModelAdmin):
 
 # admin.site.register(Battery)
 admin.site.register(Driver)
-admin.site.register(LiveStatus)
+# admin.site.register(LiveStatus)
+
+
+@admin.register(LiveStatus)
+class LiveStatusAdmin(admin.ModelAdmin):
+    list_display = (
+        "created_at",
+        "device_id",
+        "data_capture_time",
+    )
