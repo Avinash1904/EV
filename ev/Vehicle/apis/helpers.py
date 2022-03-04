@@ -28,10 +28,14 @@ def get_info_by_vehicle(vehicle):
             print("device Id ", dev["deviceId"])
             count += 1
             if str(dev["deviceId"]) == vehicle.device.imei_number:
+                print("dev is ", dev)
                 device = dev
                 battery = device["batteryVoltage"][1]
                 val = battery["value"] if battery["value"] is not None else 0
+
                 voltage = val/100
+                if len(str(val)) == 5:
+                    voltage = val/1000
                 if voltage:
                     battery_min_voltage = vehicle.battery_id.min_voltage
                     battery_max_voltage = vehicle.battery_id.max_voltage
@@ -39,6 +43,7 @@ def get_info_by_vehicle(vehicle):
                     new_range = 10
                     # battery_percentage = (
                     #     ((voltage-battery_min_voltage)*new_range)/old_range)
+                    print("val is ", val)
                     print("voltage is ", (voltage))
                     print("max is ", battery_max_voltage)
                     print("min is ", battery_min_voltage)
@@ -90,8 +95,12 @@ def get_battery_voltage(vehicle):
                     print("device ", device)
                     battery = device["batteryVoltage"][1]
                     val = battery["value"] if battery["value"] is not None else 0
-                    voltage = val/100
-                    return voltage
+                    if len(str(val)) == 5:
+                        voltage = val/1000
+                        return voltage
+                    else:
+                        voltage = val/100
+                        return voltage
 
         # count = 0
         # for device in deviceInfo.json():
