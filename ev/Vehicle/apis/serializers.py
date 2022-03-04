@@ -95,6 +95,7 @@ class DeviceSerializer(serializers.ModelSerializer):
         )
 
     def get_latitude(self, device):
+        print("\n\n----device is\n ", device.imei_number)
         data = helpers.get_device_info(device)
         return data["latitude"]
 

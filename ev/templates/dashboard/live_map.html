@@ -46,6 +46,8 @@
           };
 
           const labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+          console.log("locations ")
+          console.log(locations)
 
           var marker, i;
           var markers = [];
@@ -65,6 +67,7 @@
                 location: evt.latLng
               }, function(results, status){
                 if (status == "OK"){
+                  console.log(results)
 
                   infowindow.setContent("<p>" + locations[markers.indexOf(mark)][0] + "<br />" +
                     results[0].formatted_address + "<br />" + locations[markers.indexOf(mark)][2] +
