@@ -1,4 +1,4 @@
-#!/home/ec2-user/EV/venv/bin/python3
+#!/Users/avinash/EV/venv/bin/python3
 # When the django-admin.py deprecation ends, remove this script.
 import warnings
 
