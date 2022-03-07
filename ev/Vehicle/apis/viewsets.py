@@ -34,7 +34,7 @@ class VehicleViewset(viewsets.ModelViewSet):
         account_id = "109800"
         asset_uid = vehicle.device.vehicle_scl_id
         if device_imei and asset_uid:
-            url = "https://api- aertrakasia.aeris.com/v1.0/api/things/assets/"+asset_uid+"/command"
+            url = "https://api-aertrakasia.aeris.com/v1.0/api/things/assets/"+asset_uid+"/command"
             login_url = "https://api-aertrakasia.aeris.com/login"
             login_data = {
                 "username": "aeris.krish+Rentalbanaran@gmail.com", "password": "Selis@123"}
