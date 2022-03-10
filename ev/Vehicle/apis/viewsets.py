@@ -140,7 +140,7 @@ class TripViewset(viewsets.ModelViewSet):
 
     def get_queryset(self):
         profile = self.request.user.profile
-        return Trip.objects.filter(created_by=profile)
+        return Trip.objects.filter(created_by=profile).order_by("-created_at")
 
     def create(self, request, *args, **kwargs):
         data = request.data.copy()
